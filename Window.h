@@ -1,7 +1,7 @@
 #pragma once
-#include "Keyboard.h"
-#include "Mouse.h"
 #include "ApplicationException.h"
+
+class Mouse;
 
 class Window {
 
@@ -25,6 +25,7 @@ public:
 	Window &operator=( const Window & ) = delete;
 
 	void SetTitle( const std::string &title );
+	void SetMouseToWindow( Mouse &mouse );
 	static std::optional<int> ProcessMessages();
 	void Update();
 

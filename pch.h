@@ -42,6 +42,7 @@
 #include <utility>
 #include <vector>
 #include <optional>
+#include <sstream>
 
 #include <assert.h>
 

@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "ApplicationException.h"
-#include <sstream>
 
 ApplicationException::ApplicationException( int line, const char *file ) noexcept
 	:

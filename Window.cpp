@@ -1,7 +1,8 @@
 #include "pch.h"
 #include "Window.h"
 #include "resource.h"
-#include <sstream>
+#include "Mouse.h"
+#include "Keyboard.h"
 
 // error exception helper macro
 #define WND_EXCEPT( hr ) Window::Exception( __LINE__,__FILE__,hr )
@@ -80,6 +81,10 @@ void Window::SetTitle( const std::string &title ) {
 	}
 }
 
+void Window::SetMouseToWindow( Mouse &mouse ) {
+	mouse.SetWindow( hWnd );
+}
+
 std::optional<int> Window::ProcessMessages() {
 	MSG msg;
 	// while queue has messages, remove and dispatch them (but do not block on empty queue)
@@ -99,8 +104,7 @@ std::optional<int> Window::ProcessMessages() {
 	return {};
 }
 
-void Window::Update() {
-}
+void Window::Update() {}
 
 LRESULT Window::HandleMsgSetup( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam ) noexcept {
 	// use create parameter passed in from CreateWindow() to store window class pointer at WinAPI side
@@ -133,6 +137,9 @@ LRESULT Window::HandleMsg( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam ) n
 		return 0;
 		break;
 	}
+
+	Keyboard::ProcessMessage( msg, wParam, lParam );
+	Mouse::ProcessMessage( msg, wParam, lParam );
 
 	// do default Windows stuff for window
 	return DefWindowProc( hWnd, msg, wParam, lParam );

@@ -1,5 +1,4 @@
 #include "pch.h"
-#include "Window.h"
 #include "Application.h"
 
 Application *Application::pAppInstance = nullptr;
@@ -12,7 +11,15 @@ int Application::Start() {
 
 	pWnd = std::make_unique<Window>( 800, 600, "DBP's Software Render" );
 
-	// main loop
+	// initialize keyboard and mouse
+	pKeyboard = std::make_unique<Keyboard>();
+	pMouse = std::make_unique<Mouse>();
+	pWnd->SetMouseToWindow();
+
+	return MainLoop();
+}
+
+int Application::MainLoop() {
 	while ( true ) {
 		// process all messages pending, but to not block for new messages
 		if ( const auto ecode = Window::ProcessMessages() ) {
@@ -20,10 +27,7 @@ int Application::Start() {
 			return *ecode;
 		}
 
-		Update();
+		pKeyboard->Update();
+		pWnd->Update();
 	}
-}
-
-void Application::Update() {
-	pWnd->Update();
 }
