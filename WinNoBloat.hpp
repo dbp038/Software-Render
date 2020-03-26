@@ -1,5 +1,6 @@
 #pragma once
 
+#ifndef FULL_WINDOWS
 #define WIN32_LEAN_AND_MEAN
 #define NOGDICAPMASKS
 #define NOSYSMETRICS
@@ -33,6 +34,7 @@
 #define NOPROXYSTUB
 #define NOIMAGE
 #define NOTAPE
+#endif
 #define NOMINMAX
 
 #include <Windows.h>
