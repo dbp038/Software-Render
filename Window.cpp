@@ -35,7 +35,9 @@ Window::WindowClass::WindowClass() noexcept
 	RegisterClassEx( &wc );
 }
 
-Window::Window( int width, int height, const char *name ) : width( width ), height( height ) {
+Window::Window( int width, int height, const char *name ) 
+	: width( width ), height( height ), gfx(width, height)
+{
 	// calculate window size based on desired client region size
 	RECT wr = {};
 	wr.left = 0;
@@ -57,6 +59,8 @@ Window::Window( int width, int height, const char *name ) : width( width ), heig
 		throw WND_LAST_EXCEPT();
 	// newly created function starts off as hidden
 	ShowWindow( hWnd, SW_SHOWDEFAULT );
+
+	gfx.SetWindowToDraw( hWnd );
 }
 
 const char *Window::WindowClass::GetName() noexcept {
@@ -81,8 +85,8 @@ void Window::SetTitle( const std::string &title ) {
 	}
 }
 
-void Window::SetMouseToWindow( Mouse &mouse ) {
-	mouse.SetWindow( hWnd );
+void Window::SetMouseToWindow() {
+	Mouse::Get().SetWindow( hWnd );
 }
 
 std::optional<int> Window::ProcessMessages() {
@@ -104,7 +108,9 @@ std::optional<int> Window::ProcessMessages() {
 	return {};
 }
 
-void Window::Update() {}
+void Window::Update() {
+	gfx.EndFrame();
+}
 
 LRESULT Window::HandleMsgSetup( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam ) noexcept {
 	// use create parameter passed in from CreateWindow() to store window class pointer at WinAPI side

@@ -1,5 +1,6 @@
 #pragma once
 #include "ApplicationException.h"
+#include "Graphics.h"
 
 class Mouse;
 
@@ -25,7 +26,7 @@ public:
 	Window &operator=( const Window & ) = delete;
 
 	void SetTitle( const std::string &title );
-	void SetMouseToWindow( Mouse &mouse );
+	void SetMouseToWindow();
 	static std::optional<int> ProcessMessages();
 	void Update();
 
@@ -49,6 +50,7 @@ private:
 	int width;
 	int height;
 	HWND hWnd;
+	Graphics gfx;
 
 	static LRESULT CALLBACK HandleMsgSetup( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam ) noexcept;
 	static LRESULT CALLBACK HandleMsgThunk( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam ) noexcept;
