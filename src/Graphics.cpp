@@ -2,8 +2,8 @@
 #include "Graphics.h"
 
 Graphics::Graphics( unsigned int width, unsigned int height )
-	: rt( width, height ) {
-	currentRawRT = rt.GetBuffer();
+	: rt( width, height, sizeof( Color ) ) {
+	currentRawRT = reinterpret_cast<Color *>( rt.GetBuffer() );
 }
 
 Graphics::~Graphics() {
@@ -21,25 +21,27 @@ void Graphics::ClearBackground() {
 	memset( currentRawRT, 0, rt.GetTotalSizeInBytes() );
 }
 
-void Graphics::ClearBackground( unsigned char r, unsigned char g, unsigned char b ) {
-	char *buffer = currentRawRT;
-	void *bufferEnd = buffer + rt.GetTotalSizeInBytes();
-	const unsigned int pixelSize = rt.GetPixelSizeInBytes();
-	for ( ; buffer < bufferEnd; buffer += pixelSize ) {
-		buffer[ 0 ] = r;
-		buffer[ 1 ] = g;
-		buffer[ 2 ] = b;
+void Graphics::ClearBackground( Color color ) {
+	Color *buffer = currentRawRT;
+	size_t totalElements = size_t( rt.GetWidth() ) * rt.GetHeight();
+	void *bufferEnd = buffer + totalElements;
+	for ( ; buffer < bufferEnd; buffer++ ) {
+		buffer[ 0 ] = color;
 	}
 }
 
-void Graphics::PutPixel( unsigned int x, unsigned int y, unsigned char r, unsigned char g, unsigned char b ) {
-	size_t offset = ( size_t( y ) * rt.GetWidth() + x ) * rt.GetPixelSizeInBytes();
-	currentRawRT[ offset ] = r;
-	currentRawRT[ offset + 1 ] = g;
-	currentRawRT[ offset + 2 ] = b;
+void Graphics::PutPixel( int x, int y, Color color ) {
+	assert( x >= 0 && x < rt.GetWidth() );
+	assert( y >= 0 && y < rt.GetHeight() );
+	size_t offset = ( size_t( y ) * rt.GetWidth() + x );
+	currentRawRT[ offset ] = color;
 }
 
-void Graphics::DrawLine( int x0, int y0, int x1, int y1, unsigned char r, unsigned char g, unsigned char b ) {
+void Graphics::PutPixel( Eigen::Vector2i pos, Color color ) {
+	PutPixel( pos.x(), pos.y(), color );
+}
+
+void Graphics::DrawLine( int x0, int y0, int x1, int y1, Color color ) {
 	// basic Bresenham implementation
 	// get delta distance from source point to destination point
 	int dY = y1 - y0;
@@ -76,7 +78,7 @@ void Graphics::DrawLine( int x0, int y0, int x1, int y1, unsigned char r, unsign
 	int adv = straightAdv - dX;
 	int slantedAdv = adv - dX;
 	while ( true ) {
-		PutPixel( x, y, r, g, b );
+		PutPixel( x, y, color );
 		// we want to paint at least one pixel but we don't want to increment x in that case
 		if ( x == x1 ) break;
 		if ( adv >= 0 ) {
@@ -92,6 +94,10 @@ void Graphics::DrawLine( int x0, int y0, int x1, int y1, unsigned char r, unsign
 			adv += straightAdv;
 		}
 	}
+}
+
+void Graphics::DrawLine( Eigen::Vector2i pos0, Eigen::Vector2i pos1, Color color ) {
+	DrawLine( pos0.x(), pos0.y(), pos1.x(), pos1.y(), color );
 }
 
 void Graphics::EndFrame() const {

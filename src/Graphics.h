@@ -1,5 +1,7 @@
 #pragma once
 #include "RenderTarget.h"
+#include "Color.h"
+#include <Eigen/Core>
 
 class Graphics {
 
@@ -13,10 +15,11 @@ public:
 	void SetWindowToDraw( HWND hWnd );
 
 	void ClearBackground();
-	void ClearBackground( unsigned char r, unsigned char g, unsigned char b );
-	void PutPixel( unsigned int x, unsigned int y, unsigned char r, unsigned char g, unsigned char b );
-	void DrawLine( int x0, int y0, int x1, int y1,
-		unsigned char r, unsigned char g, unsigned char b );
+	void ClearBackground( Color color );
+	void PutPixel( int x, int y, Color color );
+	void PutPixel( Eigen::Vector2i pos , Color color );
+	void DrawLine( int x0, int y0, int x1, int y1, Color color );
+	void DrawLine( Eigen::Vector2i pos0, Eigen::Vector2i pos1, Color color );
 
 	void EndFrame() const;
 
@@ -25,6 +28,6 @@ private:
 	HWND hWnd = 0;
 	HDC dc = 0;
 	RenderTarget rt;
-	char *currentRawRT = nullptr;
+	Color *currentRawRT = nullptr;
 
 };
