@@ -1,6 +1,7 @@
 #pragma once
 #include "ApplicationException.h"
 #include "Graphics.h"
+#include "Game.h";
 
 class Mouse;
 
@@ -51,6 +52,7 @@ private:
 	int height;
 	HWND hWnd;
 	Graphics gfx;
+	Game game;
 
 	static LRESULT CALLBACK HandleMsgSetup( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam ) noexcept;
 	static LRESULT CALLBACK HandleMsgThunk( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam ) noexcept;

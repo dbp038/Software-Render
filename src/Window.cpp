@@ -35,9 +35,8 @@ Window::WindowClass::WindowClass() noexcept
 	RegisterClassEx( &wc );
 }
 
-Window::Window( int width, int height, const char *name ) 
-	: width( width ), height( height ), gfx(width, height)
-{
+Window::Window( int width, int height, const char *name )
+	: width( width ), height( height ), gfx( width, height ) {
 	// calculate window size based on desired client region size
 	RECT wr = {};
 	wr.left = 0;
@@ -109,6 +108,8 @@ std::optional<int> Window::ProcessMessages() {
 }
 
 void Window::Update() {
+	game.Update();
+	game.Render( gfx );
 	gfx.EndFrame();
 }
 
