@@ -43,6 +43,7 @@
 #include <vector>
 #include <optional>
 #include <sstream>
+#include <Eigen/Dense>
 
 #include <assert.h>
 
@@ -50,3 +51,11 @@
 #pragma warning(disable : 4702)
 #include <functional>
 #pragma warning(pop)
+
+using Eigen::Matrix;
+using Eigen::MatrixXf;
+using Eigen::Matrix4f;
+using Eigen::Vector4f;
+using Eigen::Vector3f;
+using Eigen::Vector2f;
+using Eigen::Vector2i;

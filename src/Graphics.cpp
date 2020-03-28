@@ -17,6 +17,18 @@ void Graphics::SetWindowToDraw( HWND hWnd ) {
 	dc = GetDC( hWnd );
 }
 
+int Graphics::GetWidth() const {
+	return rt.GetWidth();
+}
+
+int Graphics::GetHeight() const {
+	return rt.GetHeight();
+}
+
+Vector2i Graphics::GetScreenSize() const {
+	return Vector2i( GetWidth(), GetHeight() );
+}
+
 void Graphics::ClearBackground() {
 	memset( currentRawRT, 0, rt.GetTotalSizeInBytes() );
 }
@@ -37,10 +49,6 @@ void Graphics::PutPixel( int x, int y, Color color ) {
 	currentRawRT[ offset ] = color;
 }
 
-void Graphics::PutPixel( Eigen::Vector2i pos, Color color ) {
-	PutPixel( pos.x(), pos.y(), color );
-}
-
 void Graphics::DrawLine( int x0, int y0, int x1, int y1, Color color ) {
 	// basic Bresenham implementation
 	// get delta distance from source point to destination point
@@ -49,14 +57,18 @@ void Graphics::DrawLine( int x0, int y0, int x1, int y1, Color color ) {
 
 	// compute slanted increments
 	int slantedYIncr, slantedXIncr, straightYIncr, straightXIncr;
-	if ( dY >= 0 )
+	if ( dY > 0 )
 		slantedYIncr = 1;
+	else if ( dY == 0 )
+		slantedYIncr = 0; 
 	else {
 		dY = -dY;
 		slantedYIncr = -1;
 	}
-	if ( dX >= 0 )
+	if ( dX > 0 )
 		slantedXIncr = 1;
+	else if ( dX == 0 )
+		slantedXIncr = 0;
 	else {
 		dX = -dX;
 		slantedXIncr = -1;
@@ -77,10 +89,9 @@ void Graphics::DrawLine( int x0, int y0, int x1, int y1, Color color ) {
 	int straightAdv = 2 * dY;
 	int adv = straightAdv - dX;
 	int slantedAdv = adv - dX;
-	while ( true ) {
+	do {
 		PutPixel( x, y, color );
 		// we want to paint at least one pixel but we don't want to increment x in that case
-		if ( x == x1 ) break;
 		if ( adv >= 0 ) {
 			// slanted advancement
 			x += slantedXIncr;
@@ -93,11 +104,7 @@ void Graphics::DrawLine( int x0, int y0, int x1, int y1, Color color ) {
 			y += straightYIncr;
 			adv += straightAdv;
 		}
-	}
-}
-
-void Graphics::DrawLine( Eigen::Vector2i pos0, Eigen::Vector2i pos1, Color color ) {
-	DrawLine( pos0.x(), pos0.y(), pos1.x(), pos1.y(), color );
+	} while ( x != x1 || y != y1 );
 }
 
 void Graphics::EndFrame() const {

@@ -14,12 +14,22 @@ public:
 
 	void SetWindowToDraw( HWND hWnd );
 
+	int GetWidth() const;
+	int GetHeight() const;
+	Vector2i GetScreenSize() const;
+
 	void ClearBackground();
 	void ClearBackground( Color color );
 	void PutPixel( int x, int y, Color color );
-	void PutPixel( Eigen::Vector2i pos , Color color );
+	template<typename VectorType>
+	void PutPixel( VectorType pos, Color color ) {
+		PutPixel( pos.x(), pos.y(), color );
+	}
 	void DrawLine( int x0, int y0, int x1, int y1, Color color );
-	void DrawLine( Eigen::Vector2i pos0, Eigen::Vector2i pos1, Color color );
+	template<typename VectorType>
+	void DrawLine( VectorType pos0, VectorType pos1, Color color ) {
+		DrawLine( pos0.x(), pos0.y(), pos1.x(), pos1.y(), color );
+	}
 
 	void EndFrame() const;
 
