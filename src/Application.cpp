@@ -2,9 +2,18 @@
 #include "Application.h"
 
 Application *Application::pAppInstance = nullptr;
+TimeData Application::appTime;
 
 Application &Application::Get() {
 	return *pAppInstance;
+}
+
+bool Application::Exists() {
+	return pAppInstance != nullptr;
+}
+
+const TimeData &Application::GetTime() {
+	return appTime;
 }
 
 int Application::Start() {
@@ -27,6 +36,8 @@ int Application::MainLoop() {
 			return *ecode;
 		}
 
+		appTime.delta = deltaTimer.ElapsedAndReset() * appTime.timeScale;
+		appTime.totalTime += appTime.delta;
 		pKeyboard->Update();
 		pWnd->Update();
 	}

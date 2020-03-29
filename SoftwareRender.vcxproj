@@ -192,6 +192,7 @@
     <ClCompile Include="src\pch.cpp" />
     <ClCompile Include="src\RenderTarget.cpp" />
     <ClCompile Include="src\TestCube.cpp" />
+    <ClCompile Include="src\Time.cpp" />
     <ClCompile Include="src\Window.cpp" />
     <ClCompile Include="src\WinMain.cpp" />
     <ClCompile Include="src\Viewport.cpp" />
@@ -211,6 +212,7 @@
     <ClInclude Include="src\Game.h" />
     <ClInclude Include="src\Scene.h" />
     <ClInclude Include="src\TestCube.h" />
+    <ClInclude Include="src\Time.h" />
     <ClInclude Include="src\Window.h" />
     <ClInclude Include="src\WinNoBloat.hpp" />
     <ClInclude Include="src\Viewport.h" />
