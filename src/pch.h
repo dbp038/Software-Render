@@ -26,6 +26,7 @@
 // 26812: The enum type 'x' is unscoped. Prefer 'enum class' over 'enum' (Enum.3).
 
 #include "WinNoBloat.hpp"
+#include "Maths.h"
 
 #include <algorithm>
 #include <array>
@@ -43,7 +44,6 @@
 #include <vector>
 #include <optional>
 #include <sstream>
-#include <Eigen/Dense>
 
 #include <assert.h>
 
@@ -52,10 +52,3 @@
 #include <functional>
 #pragma warning(pop)
 
-using Eigen::Matrix;
-using Eigen::MatrixXf;
-using Eigen::Matrix4f;
-using Eigen::Vector4f;
-using Eigen::Vector3f;
-using Eigen::Vector2f;
-using Eigen::Vector2i;

@@ -203,6 +203,7 @@
     <ClInclude Include="src\ApplicationException.h" />
     <ClInclude Include="src\Bitmap.h" />
     <ClInclude Include="src\ExampleScene.h" />
+    <ClInclude Include="src\Maths.h" />
     <ClInclude Include="src\Graphics.h" />
     <ClInclude Include="src\Keyboard.h" />
     <ClInclude Include="src\Mouse.h" />

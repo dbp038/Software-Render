@@ -1,7 +1,7 @@
 #pragma once
 
 struct IndexedLineList {
-	std::vector<Vector3f> vertices;
+	std::vector<Vector4f> vertices;
 	std::vector<size_t> indices;
 };
 
@@ -10,14 +10,14 @@ class TestCube {
 public:
 	TestCube( float size ) {
 		const float side = size / 2.0f;
-		vertices.emplace_back( -side, -side, -side );
-		vertices.emplace_back( side, -side, -side );
-		vertices.emplace_back( -side, side, -side );
-		vertices.emplace_back( side, side, -side );
-		vertices.emplace_back( -side, -side, side );
-		vertices.emplace_back( side, -side, side );
-		vertices.emplace_back( -side, side, side );
-		vertices.emplace_back( side, side, side );
+		vertices.emplace_back( -side, -side, -side, 1.0f );
+		vertices.emplace_back( side, -side, -side, 1.0f );
+		vertices.emplace_back( -side, side, -side, 1.0f );
+		vertices.emplace_back( side, side, -side, 1.0f );
+		vertices.emplace_back( -side, -side, side, 1.0f );
+		vertices.emplace_back( side, -side, side, 1.0f );
+		vertices.emplace_back( -side, side, side, 1.0f );
+		vertices.emplace_back( side, side, side, 1.0f );
 	}
 	IndexedLineList GetLines() const {
 		return{
@@ -28,6 +28,6 @@ public:
 		};
 	}
 private:
-	std::vector<Vector3f> vertices;
+	std::vector<Vector4f> vertices;
 
 };
