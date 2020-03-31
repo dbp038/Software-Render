@@ -15,6 +15,11 @@ using Quaternion = Eigen::Quaternionf;
 
 const double PI = 3.1415926535897932;
 
+template <typename T>
+inline auto lerp( const T &v1, const T &v2, const float p ) {
+	return ( v2 - v1 ) * p + v1;
+}
+
 namespace Matrices {
 
 	inline Matrix3f Translation2D3f( float x, float y ) {
