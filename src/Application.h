@@ -14,6 +14,10 @@ public:
 	static bool Exists();
 	static const TimeData &GetTime();
 
+	Window &GetWindow();
+
+	void RequestClose();
+
 private:
 
 	Application() = default;
@@ -26,8 +30,6 @@ private:
 
 	std::unique_ptr<Keyboard> pKeyboard;
 	std::unique_ptr<Mouse> pMouse;
-
-	std::unique_ptr<Game> pGame;
 
 	UnscaledTimer deltaTimer;
 

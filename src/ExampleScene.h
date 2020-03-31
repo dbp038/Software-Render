@@ -1,6 +1,7 @@
 #pragma once
 #include "Scene.h"
 #include "TestCube.h"
+#include "Time.h"
 
 class ExampleScene : public Scene {
 
@@ -16,5 +17,9 @@ private:
 	TestCube cube;
 	float yaw = 0.0f, pitch = 0.0f, roll = 0.0f;
 	float rotationSpeed = 1.0f;
+
+	std::string storedWindowName;
+	UnscaledTimer winTitleUpdater;
+	void ShowFPS();
 
 };

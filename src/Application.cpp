@@ -16,6 +16,14 @@ const TimeData &Application::GetTime() {
 	return appTime;
 }
 
+Window &Application::GetWindow() {
+	return *pWnd;
+}
+
+void Application::RequestClose() {
+	PostQuitMessage( 0 );
+}
+
 int Application::Start() {
 
 	pWnd = std::make_unique<Window>( 800, 600, "DBP's Software Render" );

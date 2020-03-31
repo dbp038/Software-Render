@@ -54,6 +54,7 @@ Window::Window( int width, int height, const char *name )
 		CW_USEDEFAULT, CW_USEDEFAULT, wr.right - wr.left, wr.bottom - wr.top,
 		nullptr, nullptr, WindowClass::GetInstance(), this
 	);
+	title = name;
 	if ( hWnd == nullptr )
 		throw WND_LAST_EXCEPT();
 	// newly created function starts off as hidden
@@ -78,10 +79,15 @@ Window::~Window() {
 	DestroyWindow( hWnd );
 }
 
+const std::string &Window::GetTitle() const {
+	return title;
+}
+
 void Window::SetTitle( const std::string &title ) {
 	if ( SetWindowText( hWnd, title.c_str() ) == 0 ) {
 		throw WND_LAST_EXCEPT();
 	}
+	this->title = title;
 }
 
 void Window::SetMouseToWindow() {

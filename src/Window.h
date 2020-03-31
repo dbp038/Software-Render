@@ -9,6 +9,8 @@ class Window {
 
 public:
 
+	friend class Application;
+
 	class Exception : public ApplicationException {
 	public:
 		Exception( int line, const char *file, HRESULT hr ) noexcept;
@@ -26,10 +28,10 @@ public:
 	Window( const Window & ) = delete;
 	Window &operator=( const Window & ) = delete;
 
+	const std::string &GetTitle() const;
+
 	void SetTitle( const std::string &title );
 	void SetMouseToWindow();
-	static std::optional<int> ProcessMessages();
-	void Update();
 
 private:
 
@@ -48,6 +50,7 @@ private:
 		HINSTANCE hInst;
 	};
 
+	std::string title;
 	int width;
 	int height;
 	HWND hWnd;
@@ -57,5 +60,8 @@ private:
 	static LRESULT CALLBACK HandleMsgSetup( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam ) noexcept;
 	static LRESULT CALLBACK HandleMsgThunk( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam ) noexcept;
 	LRESULT HandleMsg( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam ) noexcept;
+
+	static std::optional<int> ProcessMessages();
+	void Update();
 
 };

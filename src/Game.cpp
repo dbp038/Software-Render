@@ -14,7 +14,6 @@ void Game::Update() {
 }
 
 void Game::Render( Graphics &gfx ) {
-	gfx.ClearBackground();
 	scenes[ activeScene ]->Draw( gfx );
 }
 
