@@ -5,7 +5,6 @@
 #include "Keyboard.h"
 #include "Application.h"
 
-ExampleScene::ExampleScene() : cube( 1.0f ), winTitleUpdater( 1.0f / 60.0f ) {
 
 }
 
@@ -40,29 +39,7 @@ void ExampleScene::Update() {
 void ExampleScene::Draw( Graphics &gfx ) {
 	ShowFPS();
 
-	unsigned char r, g, b;
-	float dt = Time.delta;
-	double time = Time.totalTime;
-	r = unsigned char( ( sin( time + 2.0f * PI / 3.0f ) / 2.0f + 0.5f ) * 255.0f );
-	g = unsigned char( ( sin( time + 4.0f * PI / 3.0f ) / 2.0f + 0.5f ) * 255.0f );
-	b = unsigned char( ( sin( time ) / 2.0f + 0.5f ) * 255.0f );
-	gfx.ClearBackground( Color( r, g, b ) );
-	Viewport screenTransformer( gfx.GetScreenSize() );
-	auto tris = cube.GetTriangles();
-	for ( auto &vert : tris.vertices ) {
-		vert = Matrices::RotationYawPitchRoll4f( yaw, pitch, roll ) * vert;
-		vert = Matrices::Translation4f( 0.0f, 0.0f, 2.0f ) * vert;
 
-		vert = Matrices::PerspectiveLH( 1.0f, 3.0f / 4.0f, 0.5f, 1000.0f ) * vert;
-		screenTransformer.Transform( vert );
-	}
-	auto &indices = tris.indices;
-	for ( auto i = tris.indices.cbegin(),
-		end = tris.indices.cend();
-		i != end; std::advance( i, 3 ) ) {
-		gfx.DrawTriangle(
-			tris.vertices[ *i ], tris.vertices[ *std::next( i ) ], tris.vertices[ *std::next( std::next( i ) ) ], Color( 255 - r, 255 - g, 255 - b ) );
-	}
 }
 
 void ExampleScene::ShowFPS() {

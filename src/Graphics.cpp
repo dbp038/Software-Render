@@ -2,7 +2,7 @@
 #include "Graphics.h"
 
 Graphics::Graphics( unsigned int width, unsigned int height )
-	: rt( width, height, sizeof( Color ) ) {
+	: rt( width, height, sizeof( Color ) ), pipeline( rt ) {
 	currentRawRT = reinterpret_cast<Color *>( rt.GetBuffer() );
 }
 
@@ -29,6 +29,10 @@ Vector2i Graphics::GetScreenSize() const {
 	return Vector2i( GetWidth(), GetHeight() );
 }
 
+void Graphics::BindContext( IRenderContext &ctx ) {
+	pCurrentCtx = &ctx;
+}
+
 void Graphics::ClearBackground() {
 	memset( currentRawRT, 0, rt.GetTotalSizeInBytes() );
 }
@@ -40,6 +44,11 @@ void Graphics::ClearBackground( Color color ) {
 	for ( ; buffer < bufferEnd; buffer++ ) {
 		buffer[ 0 ] = color;
 	}
+}
+
+void Graphics::Draw() {
+	if ( pCurrentCtx )
+		pCurrentCtx->Draw( pipeline );
 }
 
 void Graphics::PutPixel( int x, int y, Color color ) {

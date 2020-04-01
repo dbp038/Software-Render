@@ -191,9 +191,11 @@
     <ClCompile Include="src\Graphics.cpp" />
     <ClCompile Include="src\Keyboard.cpp" />
     <ClCompile Include="src\Mouse.cpp" />
+    <ClCompile Include="src\RenderPipeline.cpp" />
     <ClCompile Include="src\pch.cpp" />
     <ClCompile Include="src\RenderTarget.cpp" />
     <ClCompile Include="src\TestCube.cpp" />
+    <ClCompile Include="src\GeometryGenerator.cpp" />
     <ClCompile Include="src\Time.cpp" />
     <ClCompile Include="src\Window.cpp" />
     <ClCompile Include="src\WinMain.cpp" />
@@ -209,6 +211,8 @@
     <ClInclude Include="src\Graphics.h" />
     <ClInclude Include="src\Keyboard.h" />
     <ClInclude Include="src\Mouse.h" />
+    <ClInclude Include="src\RenderContext.h" />
+    <ClInclude Include="src\RenderPipeline.h" />
     <ClInclude Include="src\pch.h" />
     <ClInclude Include="src\RenderTarget.h" />
     <ClInclude Include="src\resource.h" />

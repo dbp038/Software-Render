@@ -1,6 +1,7 @@
 #pragma once
 #include "RenderTarget.h"
 #include "Color.h"
+#include "RenderContext.h"
 #include <Eigen/Core>
 
 class Graphics {
@@ -18,8 +19,11 @@ public:
 	int GetHeight() const;
 	Vector2i GetScreenSize() const;
 
+	void BindContext( IRenderContext &ctx );
+
 	void ClearBackground();
 	void ClearBackground( Color color );
+	void Draw();
 	void PutPixel( int x, int y, Color color );
 	template<typename VectorType>
 	void PutPixel( const VectorType &pos, Color color ) {
@@ -40,6 +44,9 @@ private:
 	HDC dc = 0;
 	RenderTarget rt;
 	Color *currentRawRT = nullptr;
+
+	RenderPipeline pipeline;
+	IRenderContext *pCurrentCtx = nullptr;
 
 	void DrawScanlineTriangle( const Vector4f &vEdge, const Vector4f &vLeft, const Vector4f &vRight, Color color );
 
