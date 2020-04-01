@@ -4,8 +4,19 @@
 #include "Mouse.h"
 #include "Keyboard.h"
 #include "Application.h"
+#include "GeometryGenerator.h"
 
 
+ExampleScene::ExampleScene() : winTitleUpdater( 1.0f / 60.0f ) {
+	auto vertices = GeometryGenerator::Cube::GetVertices( 1.0f );
+	auto colors = GeometryGenerator::Cube::GetColors();
+	cubeIndices = GeometryGenerator::Cube::GetIndices();
+	for ( size_t i = 0; i < vertices.size(); i++ ) {
+		cubeVertices.push_back( PosColorVertex{ vertices[ i ], colors[ i ] } );
+	}
+
+	ctx.BindVertexData( cubeVertices );
+	ctx.BindIndexData( cubeIndices );
 }
 
 void ExampleScene::Update() {
@@ -39,7 +50,17 @@ void ExampleScene::Update() {
 void ExampleScene::Draw( Graphics &gfx ) {
 	ShowFPS();
 
+	gfx.ClearBackground();
 
+	ctx.BindViewport( Viewport( gfx.GetWidth(), gfx.GetHeight() ) );
+
+	Matrix4f transform = Matrices::RotationYawPitchRoll4f( yaw, pitch, roll );
+	transform = Matrices::Translation4f( 0.0f, 0.0f, 2.0f ) * transform;
+	Matrix4f perspecive = Matrices::PerspectiveLH( 1.0f, 3.0f / 4.0f, 0.5f, 1000.0f );
+	ctx.BindVertexShaderBuffer( { transform, perspecive } );
+
+	gfx.BindContext( ctx );
+	gfx.Draw();
 }
 
 void ExampleScene::ShowFPS() {

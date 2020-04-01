@@ -194,7 +194,6 @@
     <ClCompile Include="src\RenderPipeline.cpp" />
     <ClCompile Include="src\pch.cpp" />
     <ClCompile Include="src\RenderTarget.cpp" />
-    <ClCompile Include="src\TestCube.cpp" />
     <ClCompile Include="src\GeometryGenerator.cpp" />
     <ClCompile Include="src\Time.cpp" />
     <ClCompile Include="src\Window.cpp" />
@@ -213,12 +212,17 @@
     <ClInclude Include="src\Mouse.h" />
     <ClInclude Include="src\RenderContext.h" />
     <ClInclude Include="src\RenderPipeline.h" />
+    <ClInclude Include="src\SingleColorPixelShader.h" />
+    <ClInclude Include="src\VertexColorPixelShader.h" />
+    <ClInclude Include="src\VertexDeclarations.h" />
+    <ClInclude Include="src\PerspectiveVertexShader.h" />
+    <ClInclude Include="src\ColorPixelShader.h" />
     <ClInclude Include="src\pch.h" />
     <ClInclude Include="src\RenderTarget.h" />
     <ClInclude Include="src\resource.h" />
     <ClInclude Include="src\Game.h" />
     <ClInclude Include="src\Scene.h" />
-    <ClInclude Include="src\TestCube.h" />
+    <ClInclude Include="src\GeometryGenerator.h" />
     <ClInclude Include="src\Time.h" />
     <ClInclude Include="src\Window.h" />
     <ClInclude Include="src\WinNoBloat.hpp" />

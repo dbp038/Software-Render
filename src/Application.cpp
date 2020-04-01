@@ -26,17 +26,19 @@ void Application::RequestClose() {
 
 int Application::Start() {
 
-	pWnd = std::make_unique<Window>( 800, 600, "DBP's Software Render" );
 
 	// initialize keyboard and mouse
 	pKeyboard = std::make_unique<Keyboard>();
 	pMouse = std::make_unique<Mouse>();
+
+	pWnd = std::make_unique<Window>( 800, 600, "DBP's Software Render" );
 	pWnd->SetMouseToWindow();
 
 	return MainLoop();
 }
 
 int Application::MainLoop() {
+	pWnd->StartUp();
 	while ( true ) {
 		// process all messages pending, but to not block for new messages
 		if ( const auto ecode = Window::ProcessMessages() ) {

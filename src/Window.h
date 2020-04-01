@@ -1,7 +1,7 @@
 #pragma once
 #include "ApplicationException.h"
 #include "Graphics.h"
-#include "Game.h";
+#include "Game.h"
 
 class Mouse;
 
@@ -62,6 +62,7 @@ private:
 	LRESULT HandleMsg( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam ) noexcept;
 
 	static std::optional<int> ProcessMessages();
+	void StartUp();
 	void Update();
 
 };

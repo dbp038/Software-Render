@@ -74,6 +74,12 @@ public:
 	void SetB( unsigned char b ) {
 		dword = ( dword & 0xFFFFFF00u ) | b;
 	}
+	Vector3f ToVector3f() const {
+		return { static_cast<float>( GetR() ), static_cast<float>( GetG() ), static_cast<float>( GetB() ) };
+	}
+	Vector4f ToVector4f() const {
+		return { static_cast<float>( GetA() ), static_cast<float>( GetR() ), static_cast<float>( GetG() ), static_cast<float>( GetB() ) };
+	}
 };
 
 namespace Colors {

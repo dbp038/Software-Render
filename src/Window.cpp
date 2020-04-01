@@ -57,10 +57,6 @@ Window::Window( int width, int height, const char *name )
 	title = name;
 	if ( hWnd == nullptr )
 		throw WND_LAST_EXCEPT();
-	// newly created function starts off as hidden
-	ShowWindow( hWnd, SW_SHOWDEFAULT );
-
-	gfx.SetWindowToDraw( hWnd );
 }
 
 const char *Window::WindowClass::GetName() noexcept {
@@ -111,6 +107,15 @@ std::optional<int> Window::ProcessMessages() {
 
 	// return empty optional when not quitting app
 	return {};
+}
+
+void Window::StartUp() {
+	// newly created window starts off as hidden
+	ShowWindow( hWnd, SW_SHOWDEFAULT );
+
+	gfx.SetWindowToDraw( hWnd );
+
+	game.Start();
 }
 
 void Window::Update() {

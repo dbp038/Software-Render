@@ -4,13 +4,14 @@
 // scenes
 #include "ExampleScene.h"
 
-Game::Game() {
+void Game::Start() {
 	// Add scenes here
 	AddScene<ExampleScene>();
 }
 
 void Game::Update() {
-	scenes[ activeScene ]->Update();
+	if ( !scenes.empty() )
+		scenes[ activeScene ]->Update();
 }
 
 void Game::Render( Graphics &gfx ) {
