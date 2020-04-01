@@ -1,5 +1,5 @@
 #pragma once
-#include "Color.h"
+#include "gfx/Color.h"
 
 template<typename InputVertex>
 struct ColorPixelShader {

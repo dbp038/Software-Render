@@ -1,10 +1,10 @@
 #pragma once
 #include "Scene.h"
-#include "Time.h"
-
-#include "VertexDeclarations.h"
-#include "PerspectiveVertexShader.h"
-#include "VertexColorPixelShader.h"
+#include "app/Time.h"
+#include "gfx/RenderContext.h"
+#include "gfx/VertexDeclarations.h"
+#include "gfx/shader/PerspectiveVertexShader.h"
+#include "gfx/shader/VertexColorPixelShader.h"
 
 class ExampleScene : public Scene {
 

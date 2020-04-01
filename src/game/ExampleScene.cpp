@@ -1,10 +1,10 @@
 #include "pch.h"
 #include "ExampleScene.h"
-#include "Viewport.h"
-#include "Mouse.h"
-#include "Keyboard.h"
-#include "Application.h"
 #include "GeometryGenerator.h"
+#include "app/Mouse.h"
+#include "app/Keyboard.h"
+#include "app/Application.h"
+#include "gfx/Viewport.h"
 
 
 ExampleScene::ExampleScene() : winTitleUpdater( 1.0f / 60.0f ) {

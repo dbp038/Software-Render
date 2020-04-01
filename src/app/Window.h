@@ -1,7 +1,7 @@
 #pragma once
 #include "ApplicationException.h"
-#include "Graphics.h"
-#include "Game.h"
+#include "gfx/Graphics.h"
+#include "game/Game.h"
 
 class Mouse;
 

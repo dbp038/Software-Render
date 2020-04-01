@@ -83,11 +83,13 @@
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)bin\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>obj\$(Platform)\$(Configuration)\</IntDir>
+    <IncludePath>$(ProjectDir)src;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)bin\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>obj\$(Platform)\$(Configuration)\</IntDir>
+    <IncludePath>$(ProjectDir)src;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -183,50 +185,50 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\Application.cpp" />
-    <ClCompile Include="src\ApplicationException.cpp" />
-    <ClCompile Include="src\Bitmap.cpp" />
-    <ClCompile Include="src\ExampleScene.cpp" />
-    <ClCompile Include="src\Game.cpp" />
-    <ClCompile Include="src\Graphics.cpp" />
-    <ClCompile Include="src\Keyboard.cpp" />
-    <ClCompile Include="src\Mouse.cpp" />
-    <ClCompile Include="src\RenderPipeline.cpp" />
+    <ClCompile Include="src\app\Application.cpp" />
+    <ClCompile Include="src\app\ApplicationException.cpp" />
+    <ClCompile Include="src\gfx\Bitmap.cpp" />
+    <ClCompile Include="src\game\ExampleScene.cpp" />
+    <ClCompile Include="src\game\Game.cpp" />
+    <ClCompile Include="src\gfx\Graphics.cpp" />
+    <ClCompile Include="src\app\Keyboard.cpp" />
+    <ClCompile Include="src\app\Mouse.cpp" />
+    <ClCompile Include="src\gfx\RenderPipeline.cpp" />
     <ClCompile Include="src\pch.cpp" />
-    <ClCompile Include="src\RenderTarget.cpp" />
-    <ClCompile Include="src\GeometryGenerator.cpp" />
-    <ClCompile Include="src\Time.cpp" />
-    <ClCompile Include="src\Window.cpp" />
-    <ClCompile Include="src\WinMain.cpp" />
-    <ClCompile Include="src\Viewport.cpp" />
+    <ClCompile Include="src\gfx\RenderTarget.cpp" />
+    <ClCompile Include="src\game\GeometryGenerator.cpp" />
+    <ClCompile Include="src\app\Time.cpp" />
+    <ClCompile Include="src\app\Window.cpp" />
+    <ClCompile Include="src\app\WinMain.cpp" />
+    <ClCompile Include="src\gfx\Viewport.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Color.h" />
-    <ClInclude Include="src\Application.h" />
-    <ClInclude Include="src\ApplicationException.h" />
-    <ClInclude Include="src\Bitmap.h" />
-    <ClInclude Include="src\ExampleScene.h" />
-    <ClInclude Include="src\Maths.h" />
-    <ClInclude Include="src\Graphics.h" />
-    <ClInclude Include="src\Keyboard.h" />
-    <ClInclude Include="src\Mouse.h" />
-    <ClInclude Include="src\RenderContext.h" />
-    <ClInclude Include="src\RenderPipeline.h" />
-    <ClInclude Include="src\SingleColorPixelShader.h" />
-    <ClInclude Include="src\VertexColorPixelShader.h" />
-    <ClInclude Include="src\VertexDeclarations.h" />
-    <ClInclude Include="src\PerspectiveVertexShader.h" />
-    <ClInclude Include="src\ColorPixelShader.h" />
+    <ClInclude Include="src\gfx\Color.h" />
+    <ClInclude Include="src\app\Application.h" />
+    <ClInclude Include="src\app\ApplicationException.h" />
+    <ClInclude Include="src\gfx\Bitmap.h" />
+    <ClInclude Include="src\game\ExampleScene.h" />
+    <ClInclude Include="src\gfx\Maths.h" />
+    <ClInclude Include="src\gfx\Graphics.h" />
+    <ClInclude Include="src\app\Keyboard.h" />
+    <ClInclude Include="src\app\Mouse.h" />
+    <ClInclude Include="src\gfx\RenderContext.h" />
+    <ClInclude Include="src\gfx\RenderPipeline.h" />
+    <ClInclude Include="src\gfx\shader\SingleColorPixelShader.h" />
+    <ClInclude Include="src\gfx\shader\VertexColorPixelShader.h" />
+    <ClInclude Include="src\gfx\VertexDeclarations.h" />
+    <ClInclude Include="src\gfx\shader\PerspectiveVertexShader.h" />
+    <ClInclude Include="src\gfx\shader\ColorPixelShader.h" />
     <ClInclude Include="src\pch.h" />
-    <ClInclude Include="src\RenderTarget.h" />
+    <ClInclude Include="src\gfx\RenderTarget.h" />
     <ClInclude Include="src\resource.h" />
-    <ClInclude Include="src\Game.h" />
-    <ClInclude Include="src\Scene.h" />
-    <ClInclude Include="src\GeometryGenerator.h" />
-    <ClInclude Include="src\Time.h" />
-    <ClInclude Include="src\Window.h" />
-    <ClInclude Include="src\WinNoBloat.hpp" />
-    <ClInclude Include="src\Viewport.h" />
+    <ClInclude Include="src\game\Game.h" />
+    <ClInclude Include="src\game\Scene.h" />
+    <ClInclude Include="src\game\GeometryGenerator.h" />
+    <ClInclude Include="src\app\Time.h" />
+    <ClInclude Include="src\app\Window.h" />
+    <ClInclude Include="src\app\WinNoBloat.hpp" />
+    <ClInclude Include="src\gfx\Viewport.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="src\SoftwareRender.rc" />

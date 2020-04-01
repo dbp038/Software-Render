@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "GeometryGenerator.h"
-#include "Color.h"
+#include "gfx/Color.h"
 
 std::vector<Vector4f> GeometryGenerator::Cube::GetVertices( float size ) {
 	const float side = size / 2.0f;
