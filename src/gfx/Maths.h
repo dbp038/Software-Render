@@ -1,6 +1,12 @@
 #pragma once
 
+// disable warnings, Eigen devs must know what they're doing so there's no point
+#pragma warning(push)
+#pragma warning ( disable : 26812 )
+#pragma warning ( disable : 26450 )
+#pragma warning ( disable : 26495 )
 #include <Eigen/Dense>
+#pragma warning(pop)
 
 using Eigen::Matrix;
 using Eigen::MatrixXf;

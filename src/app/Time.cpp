@@ -6,7 +6,7 @@ UnscaledTimer::UnscaledTimer() {
 	Reset();
 }
 
-UnscaledTimer::UnscaledTimer( double goal ) : goal( SecondsToTicks( goal ) ) {
+UnscaledTimer::UnscaledTimer( float goal ) : goal( SecondsToTicks( goal ) ) {
 	Reset();
 }
 
@@ -72,7 +72,7 @@ ScaledTimer::ScaledTimer() {
 	Reset();
 }
 
-ScaledTimer::ScaledTimer( double goal ) : goal( goal ) {
+ScaledTimer::ScaledTimer( float goal ) : goal( goal ) {
 	Reset();
 }
 

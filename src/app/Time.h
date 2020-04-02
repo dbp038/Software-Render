@@ -26,7 +26,7 @@ class UnscaledTimer : public ITimer {
 public:
 
 	UnscaledTimer();
-	UnscaledTimer( double goal );
+	UnscaledTimer( float goal );
 
 	double Elapsed() const override;
 	double Remaining() const override;
@@ -53,7 +53,7 @@ class ScaledTimer : public ITimer {
 public:
 
 	ScaledTimer();
-	ScaledTimer( double goal );
+	ScaledTimer( float goal );
 
 	double Elapsed() const override;
 	double Remaining() const override;

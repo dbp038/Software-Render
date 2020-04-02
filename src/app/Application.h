@@ -1,7 +1,7 @@
 #pragma once
 #include "Window.h"
-#include "Keyboard.h"
-#include "Mouse.h"
+#include "device/Keyboard.h"
+#include "device/Mouse.h"
 #include "Time.h"
 
 class Application {

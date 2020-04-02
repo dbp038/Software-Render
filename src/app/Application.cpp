@@ -46,7 +46,7 @@ int Application::MainLoop() {
 			return *ecode;
 		}
 
-		appTime.delta = deltaTimer.ElapsedAndReset() * appTime.timeScale;
+		appTime.delta = float( deltaTimer.ElapsedAndReset() ) * appTime.timeScale;
 		appTime.totalTime += appTime.delta;
 		pKeyboard->Update();
 		pWnd->Update();

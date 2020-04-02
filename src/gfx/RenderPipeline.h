@@ -65,7 +65,7 @@ private:
 	template<typename CtxType>
 	void PrimitiveAssemblyStage( CtxType &ctx, std::vector<VSOut<CtxType>> &vertices, const std::vector<size_t> &indices ) {
 		const Vector3f cameraView( 0.0f, 0.0f, 1.0f );
-		for ( int i = 0; i < indices.size(); i += 3 ) {
+		for ( size_t i = 0; i < indices.size(); i += 3 ) {
 			// assemble triangle
 			VSOut<CtxType> &v0 = vertices[ indices[ i ] ];
 			VSOut<CtxType> &v1 = vertices[ indices[ i + 1 ] ];

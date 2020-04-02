@@ -1,8 +1,6 @@
 #include "pch.h"
 #include "ExampleScene.h"
 #include "GeometryGenerator.h"
-#include "app/Mouse.h"
-#include "app/Keyboard.h"
 #include "app/Application.h"
 #include "gfx/Viewport.h"
 

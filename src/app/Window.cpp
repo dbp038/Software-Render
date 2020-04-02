@@ -1,8 +1,8 @@
 #include "pch.h"
 #include "Window.h"
 #include "resource.h"
-#include "Mouse.h"
-#include "Keyboard.h"
+#include "device/Mouse.h"
+#include "device/Keyboard.h"
 
 // error exception helper macro
 #define WND_EXCEPT( hr ) Window::Exception( __LINE__,__FILE__,hr )

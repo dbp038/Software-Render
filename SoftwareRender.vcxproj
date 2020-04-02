@@ -101,7 +101,7 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <FloatingPointModel>Fast</FloatingPointModel>
-      <PrecompiledHeader>Create</PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>$(ProjectDir)eigen\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
@@ -122,10 +122,10 @@
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <FloatingPointModel>Fast</FloatingPointModel>
-      <PrecompiledHeader>Create</PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>$(ProjectDir)eigen\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
+      <EnableEnhancedInstructionSet>NotSet</EnableEnhancedInstructionSet>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -145,7 +145,7 @@
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <FloatingPointModel>Fast</FloatingPointModel>
-      <PrecompiledHeader>Create</PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>$(ProjectDir)eigen\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
@@ -171,10 +171,10 @@
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <FloatingPointModel>Fast</FloatingPointModel>
-      <PrecompiledHeader>Create</PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>$(ProjectDir)eigen\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
+      <EnableEnhancedInstructionSet>NotSet</EnableEnhancedInstructionSet>
       <Optimization>MaxSpeed</Optimization>
     </ClCompile>
     <Link>
@@ -191,8 +191,8 @@
     <ClCompile Include="src\game\ExampleScene.cpp" />
     <ClCompile Include="src\game\Game.cpp" />
     <ClCompile Include="src\gfx\Graphics.cpp" />
-    <ClCompile Include="src\app\Keyboard.cpp" />
-    <ClCompile Include="src\app\Mouse.cpp" />
+    <ClCompile Include="src\app\device\Keyboard.cpp" />
+    <ClCompile Include="src\app\device\Mouse.cpp" />
     <ClCompile Include="src\gfx\RenderPipeline.cpp" />
     <ClCompile Include="src\pch.cpp" />
     <ClCompile Include="src\gfx\RenderTarget.cpp" />
@@ -210,15 +210,14 @@
     <ClInclude Include="src\game\ExampleScene.h" />
     <ClInclude Include="src\gfx\Maths.h" />
     <ClInclude Include="src\gfx\Graphics.h" />
-    <ClInclude Include="src\app\Keyboard.h" />
-    <ClInclude Include="src\app\Mouse.h" />
+    <ClInclude Include="src\app\device\Keyboard.h" />
+    <ClInclude Include="src\app\device\Mouse.h" />
     <ClInclude Include="src\gfx\RenderContext.h" />
     <ClInclude Include="src\gfx\RenderPipeline.h" />
     <ClInclude Include="src\gfx\shader\SingleColorPixelShader.h" />
     <ClInclude Include="src\gfx\shader\VertexColorPixelShader.h" />
     <ClInclude Include="src\gfx\VertexDeclarations.h" />
     <ClInclude Include="src\gfx\shader\PerspectiveVertexShader.h" />
-    <ClInclude Include="src\gfx\shader\ColorPixelShader.h" />
     <ClInclude Include="src\pch.h" />
     <ClInclude Include="src\gfx\RenderTarget.h" />
     <ClInclude Include="src\resource.h" />

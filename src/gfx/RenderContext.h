@@ -8,6 +8,7 @@ class IRenderContext {
 
 protected:
 
+	// Pipeline::DrawCall requires the type of the son, not IRenderContext
 	virtual void Draw( RenderPipeline &pipeline ) = 0;
 
 };
@@ -17,39 +18,35 @@ class RenderContext : public IRenderContext {
 
 public:
 
+	// could be avoided but it would require more type inference in RenderPipeline
 	friend class RenderPipeline;
 
 	RenderContext() : viewport( 0, 0 ) {}
+	RenderContext( const VS &vs, const PS &ps ) : vs( vs ), ps( ps ), viewport( 0, 0 ) {}
 
-	void BindVertexData( const std::vector<Vertex> vertList ) {
+	void BindVertexData( const std::vector<Vertex> &vertList ) {
 		vertices = vertList;
 	}
-	void BindIndexData( const std::vector<size_t> idxList ) {
+	void BindIndexData( const std::vector<size_t> &idxList ) {
 		indices = idxList;
 	}
-	void BindViewport( const Viewport vp ) {
+	void BindViewport( const Viewport &vp ) {
 		viewport = vp;
 	}
-	void BindVertexShaderBuffer( const VS buffer ) {
+	void BindVertexShaderBuffer( const VS &buffer ) {
 		vs = buffer;
 	}
-	void BindPixelShaderBuffer( const PS buffer ) {
+	void BindPixelShaderBuffer( const PS &buffer ) {
 		ps = buffer;
 	}
 
-	const std::vector<Vertex> &GetVertices() {
+	const std::vector<Vertex> &GetVertices() const {
 		return vertices;
 	}
-	std::vector<Vertex> GetVerticesCopy() {
-		return vertices;
-	}
-	const std::vector<size_t> &GetIndices() {
+	const std::vector<size_t> &GetIndices() const {
 		return indices;
 	}
-	std::vector<size_t> GetIndicesCopy() {
-		return indices;
-	}
-	const Viewport &GetViewport() {
+	const Viewport &GetViewport() const {
 		return viewport;
 	}
 	VS &GetVertexShaderData() {
