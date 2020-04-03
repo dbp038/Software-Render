@@ -7,16 +7,16 @@ Bitmap::Bitmap( unsigned int width, unsigned int height )
 Bitmap::Bitmap( unsigned int width, unsigned int height, unsigned int pixelSizeInBytes )
 	: width( width ), height( height ), pixelSizeInBytes( pixelSizeInBytes ) {
 	totalSizeInBytes = size_t( width ) * height * pixelSizeInBytes;
-	imageBuffer.resize( totalSizeInBytes );
-	memset( imageBuffer.data(), 0, totalSizeInBytes );
+	pImageBuffer = std::make_unique<unsigned char[]>( totalSizeInBytes );
+	memset( pImageBuffer.get(), 0, totalSizeInBytes );
 }
 
-char *Bitmap::GetBuffer() {
-	return imageBuffer.data();
+unsigned char *Bitmap::GetBuffer() {
+	return pImageBuffer.get();
 }
 
-const char *Bitmap::GetBuffer() const {
-	return imageBuffer.data();
+const unsigned char *Bitmap::GetBuffer() const {
+	return pImageBuffer.get();
 }
 
 unsigned int Bitmap::GetWidth() const {

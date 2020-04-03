@@ -73,11 +73,13 @@
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)bin\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>obj\$(Platform)\$(Configuration)\</IntDir>
+    <IncludePath>$(ProjectDir)src;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)bin\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>obj\$(Platform)\$(Configuration)\</IntDir>
+    <IncludePath>$(ProjectDir)src;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -187,6 +189,7 @@
   <ItemGroup>
     <ClCompile Include="src\app\Application.cpp" />
     <ClCompile Include="src\app\ApplicationException.cpp" />
+    <ClCompile Include="src\app\resources\FileLoader.cpp" />
     <ClCompile Include="src\gfx\Bitmap.cpp" />
     <ClCompile Include="src\game\ExampleScene.cpp" />
     <ClCompile Include="src\game\Game.cpp" />
@@ -194,6 +197,8 @@
     <ClCompile Include="src\app\device\Keyboard.cpp" />
     <ClCompile Include="src\app\device\Mouse.cpp" />
     <ClCompile Include="src\gfx\RenderPipeline.cpp" />
+    <ClCompile Include="src\gfx\TextureBitmap.cpp" />
+    <ClCompile Include="src\gfx\TextureSampler.cpp" />
     <ClCompile Include="src\pch.cpp" />
     <ClCompile Include="src\gfx\RenderTarget.cpp" />
     <ClCompile Include="src\game\GeometryGenerator.cpp" />
@@ -203,6 +208,8 @@
     <ClCompile Include="src\gfx\Viewport.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\app\resources\FileLoader.h" />
+    <ClInclude Include="src\app\resources\stb_image.h" />
     <ClInclude Include="src\gfx\Color.h" />
     <ClInclude Include="src\app\Application.h" />
     <ClInclude Include="src\app\ApplicationException.h" />
@@ -214,7 +221,10 @@
     <ClInclude Include="src\app\device\Mouse.h" />
     <ClInclude Include="src\gfx\RenderContext.h" />
     <ClInclude Include="src\gfx\RenderPipeline.h" />
+    <ClInclude Include="src\gfx\TextureBitmap.h" />
+    <ClInclude Include="src\gfx\TextureSampler.h" />
     <ClInclude Include="src\gfx\shader\SingleColorPixelShader.h" />
+    <ClInclude Include="src\gfx\shader\TexturePixelShader.h" />
     <ClInclude Include="src\gfx\shader\VertexColorPixelShader.h" />
     <ClInclude Include="src\gfx\VertexDeclarations.h" />
     <ClInclude Include="src\gfx\shader\PerspectiveVertexShader.h" />

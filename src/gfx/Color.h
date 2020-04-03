@@ -34,15 +34,40 @@ public:
 	constexpr Color( unsigned char x, unsigned char r, unsigned char g, unsigned char b )
 		:
 		dword( ( x << 24u ) | ( r << 16u ) | ( g << 8u ) | b ) {}
+	constexpr Color( float x, float r, float g, float b )
+		: dword( 
+			( unsigned char( x ) << 24u ) |
+			( unsigned char( r ) << 16u ) |
+			( unsigned char( g ) << 8u ) |
+			unsigned char( b ) ) 
+	{}
+	constexpr Color( float r, float g, float b )
+		: dword(
+			( unsigned char( r ) << 16u ) |
+			( unsigned char( g ) << 8u ) |
+			unsigned char( b ) )
+	{}
 	constexpr Color( unsigned char r, unsigned char g, unsigned char b )
 		:
 		dword( ( r << 16u ) | ( g << 8u ) | b ) {}
 	constexpr Color( Color col, unsigned char x )
 		:
 		Color( ( x << 24u ) | col.dword ) {}
-	Color &operator =( Color color ) {
+	Color( float x, const Vector3f &colf )
+		:
+		Color( x, colf[ 0 ], colf[ 1 ], colf[ 2 ] ) {}
+	Color( const Vector4f &colf )
+		:
+		Color( colf[0], colf[1], colf[2], colf[3] ) {}
+	Color &operator=( Color color ) {
 		dword = color.dword;
 		return *this;
+	}
+	bool	operator==( const Color &rhs ) const {
+		return GetA() == rhs.GetA() && GetR() == rhs.GetR() && GetG() == rhs.GetG() && GetB() == rhs.GetB();
+	}
+	bool	operator!=( const Color &rhs ) const {
+		return !( *this == rhs );
 	}
 	constexpr unsigned char GetX() const {
 		return dword >> 24u;

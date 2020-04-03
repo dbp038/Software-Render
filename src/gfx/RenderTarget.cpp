@@ -16,7 +16,7 @@ RenderTarget::RenderTarget( unsigned int width, unsigned int height, unsigned in
 // Copies bitmap raw data to the background of the window with that device context
 bool RenderTarget::SendBitsToDevice( HDC dc ) const {
 	return SetDIBitsToDevice( dc, 0, 0, width, height, 0, 0, 0, height,
-		imageBuffer.data(), &bmInfo, DIB_RGB_COLORS ) < 0;
+		pImageBuffer.get(), &bmInfo, DIB_RGB_COLORS ) < 0;
 }
 
 void RenderTarget::SetupInfoDescriptor() {

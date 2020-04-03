@@ -33,3 +33,20 @@ struct PosColorVertex : public PosVertex {
 	}
 
 };
+
+struct PosUvVertex : public PosVertex {
+
+	Vector2f uvs;
+
+	PosUvVertex &operator+=( const PosUvVertex &rhs ) {
+		PosVertex::operator+=( rhs );
+		uvs += rhs.uvs;
+		return *this;
+	}
+	PosUvVertex &operator*=( const float rhs ) {
+		PosVertex::operator*=( rhs );
+		uvs *= rhs;
+		return *this;
+	}
+
+};
