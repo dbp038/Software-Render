@@ -237,11 +237,11 @@ private:
 
 		// check the direction of the raster
 		if ( vEdge.position.y() > vLeft.position.y() )
-			yStart = ceilf( vLeft.position.y() - 0.5f );	// top part of the top-left rule
+			yStart = roundf( vLeft.position.y() );	// top part of the top-left rule
 		else
-			yStart = roundf( vLeft.position.y() );
+			yStart = ceilf( vLeft.position.y() - 0.5f );
 		// initialize positions and thresholds
-		yLimit = roundf( vEdge.position.y() );
+		yLimit = ceilf( vEdge.position.y() - 0.5f );
 		scanlineStartPos = vLeft;
 		scanlineEndPos = vRight;
 		currentPos = scanlineStartPos;
@@ -267,15 +267,28 @@ private:
 				// we do it like this so we don't have to define a lot of operators for 
 				// every vertex declaration, sorry if it's not easy to understand
 			}
+			// compute scanline start and end pixel positions
+			horizontalOffset = static_cast<int>( roundf( scanlineStartPos.position.x() ) ); // left part of the top-left rule
+			rightLimit = static_cast<int>( ceilf( scanlineEndPos.position.x() - 0.5f ) );
+			// calculate how much represents a 1 pixel increment in viewport space 
+			{
+				// formula:
+				//	horizontalIncr = ( scanlineEndPos - scanlineStartPos ) * ( 1.0f / ( rightLimit - horizontalOffset ) );
+				horizontalIncr = scanlineStartPos;
+				horizontalIncr *= -1;
+				horizontalIncr += scanlineEndPos;
+				horizontalIncr *= 1.0f / ( rightLimit - horizontalOffset );
+				// we do it like this so we don't have to define a lot of operators for 
+				// every vertex declaration, sorry if it's not easy to understand
+			}
 
 			// raster loop
 			for ( float drawPercentage = 0.0f; drawPercentage <= 1.0f; drawPercentage += deltaDrawPercentage ) {
 				// position buffer to the start of the next line in the buffer
-				pCurrentPixel = &pBuffer[ static_cast<int>( roundf( scanlineStartPos.position.y() ) ) *width ];
-
-				// compute scanline start and end pixel positions
-				horizontalOffset = static_cast<int>( roundf( scanlineStartPos.position.x() - 1.0f ) ); // left part of the top-left rule
-				rightLimit = static_cast<int>( ceilf( scanlineEndPos.position.x() ) );
+				if ( vEdge.position.y() > vLeft.position.y() )
+					pCurrentPixel = &pBuffer[ static_cast<int>( roundf( scanlineStartPos.position.y() ) ) *width ];
+				else
+					pCurrentPixel = &pBuffer[ static_cast<int>( ceilf( scanlineStartPos.position.y() - 0.5f ) ) *width ];
 				// buffer end position in scanline
 				pEndPixel = pCurrentPixel + rightLimit;
 				// buffer start position in scanline
@@ -283,17 +296,6 @@ private:
 
 				// avoid 0 lenght scanline rare case
 				if ( pCurrentPixel != pEndPixel ) {
-					// calculate how much represents a 1 pixel increment in viewport space 
-					{
-						// formula:
-						//	horizontalIncr = ( scanlineEndPos - scanlineStartPos ) * ( 1.0f / ( rightLimit - horizontalOffset ) );
-						horizontalIncr = scanlineStartPos;
-						horizontalIncr *= -1;
-						horizontalIncr += scanlineEndPos;
-						horizontalIncr *= 1.0f / ( rightLimit - horizontalOffset );
-						// we do it like this so we don't have to define a lot of operators for 
-						// every vertex declaration, sorry if it's not easy to understand
-					}
 					// draw single scanline loop
 					for ( ; pCurrentPixel <= pEndPixel; pCurrentPixel++ ) {
 						PixelShaderStage( ctx, pCurrentPixel, currentPos );
@@ -306,6 +308,9 @@ private:
 				scanlineStartPos += leftIncr;
 				scanlineEndPos += rightIncr;
 				currentPos = scanlineStartPos;
+				// compute next scanline start and end pixel positions
+				horizontalOffset = static_cast<int>( roundf( scanlineStartPos.position.x() ) ); // left part of the top-left rule
+				rightLimit = static_cast<int>( ceilf( scanlineEndPos.position.x() - 0.5f ) );
 			}
 		}
 	}
