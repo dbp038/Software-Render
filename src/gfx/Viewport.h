@@ -5,7 +5,9 @@ class Viewport {
 public:
 
 	Viewport( int width, int height );
-	Viewport( const Vector2i &size );
+	Viewport( int startX, int startY, int width, int height );
+	Viewport( const Vector2f &size );
+	Viewport( const Vector4f &vp );
 
 	// Transforms a coordinate to screen space.
 	//	- returns: A reference to coord with transformations applied.
@@ -16,6 +18,7 @@ public:
 
 private:
 
+	Vector4f offset = Vector4f::Zero();
 	Vector4f factor;
 
 };
