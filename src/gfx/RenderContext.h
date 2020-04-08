@@ -1,6 +1,7 @@
 #pragma once
 #include "Viewport.h"
 #include "RenderPipeline.h"
+#include "ClippingCullingUnit.h"
 
 class IRenderContext {
 
@@ -13,9 +14,12 @@ protected:
 
 };
 
-template<typename Vertex, typename VS, typename PS>
+template<typename VertexT, typename VST, typename PST>
 class RenderContext : public IRenderContext {
 
+	using InputVertex = VertexT;
+	using VS = VST;
+	using PS = PST;
 	using VSOut = typename std::result_of<decltype( &VS::operator() )( VS, InputVertex )>::type;
 	 
 public:
@@ -26,7 +30,7 @@ public:
 	RenderContext() : viewport( 0, 0 ) {}
 	RenderContext( const VS &vs, const PS &ps ) : vs( vs ), ps( ps ), viewport( 0, 0 ) {}
 
-	void BindVertexData( const std::vector<Vertex> &vertList ) {
+	void BindVertexData( const std::vector<InputVertex> &vertList ) {
 		vertices = vertList;
 	}
 	void BindIndexData( const std::vector<size_t> &idxList ) {
@@ -42,7 +46,7 @@ public:
 		ps = buffer;
 	}
 
-	const std::vector<Vertex> &GetVertices() const {
+	const std::vector<InputVertex> &GetVertices() const {
 		return vertices;
 	}
 	const std::vector<size_t> &GetIndices() const {
@@ -63,7 +67,7 @@ public:
 
 private:
 
-	std::vector<Vertex> vertices;
+	std::vector<InputVertex> vertices;
 	std::vector<size_t> indices;
 
 	VS vs;

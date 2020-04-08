@@ -11,7 +11,7 @@ public:
 		polygon[ 2 ] = { v2, 1, 0 };
 		polygonSize = 3;
 		
-		ResetTriangle()
+		ResetTriangle();
 	}
 	void ResetTriangle() {
 		nextTriangleVertex = 0;

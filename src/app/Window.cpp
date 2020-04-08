@@ -79,6 +79,14 @@ const std::string &Window::GetTitle() const {
 	return title;
 }
 
+const int Window::GetWidth() const {
+	return width;
+}
+
+const int Window::GetHeight() const {
+	return height;
+}
+
 void Window::SetTitle( const std::string &title ) {
 	if ( SetWindowText( hWnd, title.c_str() ) == 0 ) {
 		throw WND_LAST_EXCEPT();

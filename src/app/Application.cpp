@@ -31,7 +31,7 @@ int Application::Start() {
 	pKeyboard = std::make_unique<Keyboard>();
 	pMouse = std::make_unique<Mouse>();
 
-	pWnd = std::make_unique<Window>( 800, 600, "DBP's Software Render" );
+	pWnd = std::make_unique<Window>( 1280, 720, "DBP's Software Render" );
 	pWnd->SetMouseToWindow();
 
 	return MainLoop();

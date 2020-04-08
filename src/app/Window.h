@@ -29,6 +29,8 @@ public:
 	Window &operator=( const Window & ) = delete;
 
 	const std::string &GetTitle() const;
+	const int GetWidth() const;
+	const int GetHeight() const;
 
 	void SetTitle( const std::string &title );
 	void SetMouseToWindow();

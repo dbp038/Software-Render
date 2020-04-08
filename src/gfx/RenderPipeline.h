@@ -6,13 +6,13 @@
 class RenderPipeline {
 
 	template<typename CtxType>
-	using InputVertex = typename decltype( typename std::declval<CtxType>().vertices )::value_type;
+	using InputVertex = typename CtxType::InputVertex;
 	template<typename CtxType>
-	using VS = decltype( std::declval<CtxType>().vs );
+	using VS = typename CtxType::VS;
 	template<typename CtxType>
-	using PS = decltype( std::declval<CtxType>().ps );
+	using PS = typename CtxType::PS;
 	template<typename CtxType>
-	using VSOut = typename std::result_of<decltype( &VS<CtxType>::operator() )( VS<CtxType>, InputVertex<CtxType> )>::type;
+	using VSOut = typename CtxType::VSOut;
 
 public:
 
