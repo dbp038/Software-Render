@@ -1,6 +1,6 @@
 #pragma once
 #include "ApplicationException.h"
-#include "gfx/Graphics.h"
+#include "gfx/core/Graphics.h"
 #include "game/Game.h"
 
 class Mouse;

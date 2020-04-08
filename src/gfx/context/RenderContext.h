@@ -1,6 +1,6 @@
 #pragma once
 #include "Viewport.h"
-#include "RenderPipeline.h"
+#include "gfx/core/RenderPipeline.h"
 #include "ClippingCullingUnit.h"
 
 class IRenderContext {

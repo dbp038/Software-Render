@@ -1,7 +1,7 @@
 #pragma once
 #include "Scene.h"
 #include "app/Time.h"
-#include "gfx/RenderContext.h"
+#include "gfx/context/RenderContext.h"
 
 class ExampleScene : public Scene {
 

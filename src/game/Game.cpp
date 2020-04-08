@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "Game.h"
-#include "gfx/Graphics.h"
+#include "gfx/core/Graphics.h"
 
 // scenes
 #include "ExampleScene.h"

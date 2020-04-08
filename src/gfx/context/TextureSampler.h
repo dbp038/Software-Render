@@ -1,5 +1,5 @@
 #pragma once
-#include "Color.h"
+#include "gfx/core/Color.h"
 #include "TextureBitmap.h"
 
 class ITextureSampler {

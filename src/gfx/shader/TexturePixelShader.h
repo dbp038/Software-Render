@@ -1,6 +1,6 @@
 #pragma once
-#include "gfx/Bitmap.h"
-#include "gfx/TextureSampler.h"
+#include "gfx/core/Bitmap.h"
+#include "gfx/context/TextureSampler.h"
 
 template<typename Input, typename Sampler>
 struct TexturePixelShader {

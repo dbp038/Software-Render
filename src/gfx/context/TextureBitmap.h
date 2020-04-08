@@ -1,5 +1,5 @@
 #pragma once
-#include "Bitmap.h"
+#include "gfx/core/Bitmap.h"
 
 class TextureBitmap : public IBitmap {
 

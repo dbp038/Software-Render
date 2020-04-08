@@ -26,7 +26,7 @@
 // 26812: The enum type 'x' is unscoped. Prefer 'enum class' over 'enum' (Enum.3).
 
 #include "app/WinNoBloat.hpp"
-#include "gfx/Maths.h"
+#include "gfx/core/Maths.h"
 
 #include <algorithm>
 #include <array>
