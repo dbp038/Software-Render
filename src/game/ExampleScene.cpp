@@ -8,20 +8,23 @@
 #include "gfx/context/VertexDeclarations.h"
 #include "gfx/context/TextureSampler.h"
 #include "gfx/shader/PerspectiveVertexShader.h"
+#include "gfx/shader/FaceColorGeometryShader.h"
 #include "gfx/shader/TexturePixelShader.h"
 #include "gfx/shader/VertexColorPixelShader.h"
 
-using VertexType = PosUvVertex;
+using VertexType = PosVertex;
 using Sampler = TextureLinearSampler;
 
 using VS = PerspectiveVertexShader<VertexType, VertexType>;
-//using PS = VertexColorPixelShader<VertexType>;
-using PS = TexturePixelShader<VertexType, Sampler>;
+using GS = FaceColorGeometryShader;
+using PS = VertexColorPixelShader<PosColorVertex>;
+//using PS = TexturePixelShader<VertexType, Sampler>;
 
 using CtxType = RenderContext<
 	VertexType,
 	VS,
-	PS
+	PS,
+	GS
 >;
 
 ExampleScene::ExampleScene() : winTitleUpdater( 1.0f / 23.0f ) {
@@ -35,15 +38,25 @@ ExampleScene::ExampleScene() : winTitleUpdater( 1.0f / 23.0f ) {
 	std::vector<VertexType> cubeVertices;
 	auto cubeIndices = GeometryGenerator::Cube::GetWrapedIndices();
 	for ( size_t i = 0; i < vertices.size(); i++ ) {
-		cubeVertices.push_back( VertexType{ vertices[ i ], uvs[ i ] } );
+		cubeVertices.push_back( VertexType{ vertices[ i ] } );
 	}
 
 	pCtx = std::make_unique<CtxType>();
 	CtxType &ctx = *static_cast<CtxType *>( pCtx.get() );
 
-	auto &ps = ctx.GetPixelShaderData();
-	ps.texture.SetTexture( "bin\\resources\\box_sd.png" );
-	ps.sampler.SetUVMode( ITextureSampler::UVMode::WRAP );
+	auto &gs = ctx.GetGeometryShaderData();
+	gs.faceColors = {
+		Colors::Red.ToVector4f(),
+		Colors::Green.ToVector4f(),
+		Colors::Blue.ToVector4f(),
+		Colors::Yellow.ToVector4f(),
+		Colors::Magenta.ToVector4f(),
+		Colors::Cyan.ToVector4f()
+	};
+
+	//auto &ps = ctx.GetPixelShaderData();
+	//ps.texture.SetTexture( "bin\\resources\\box_sd.png" );
+	//ps.sampler.SetUVMode( ITextureSampler::UVMode::WRAP );
 
 	ctx.BindViewport( Viewport( width, height ) );
 

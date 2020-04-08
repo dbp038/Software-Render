@@ -2,10 +2,18 @@
 #include "Viewport.h"
 #include "gfx/core/RenderPipeline.h"
 #include "ClippingCullingUnit.h"
+#include "gfx/shader/DefaultGeometryShader.h"
 
 class IRenderContext {
 
+public:
+
 	friend class Graphics;
+
+	template<typename InputVertex, typename VS>
+	using DefaultGS = DefaultGeometryShader<
+		typename std::result_of<decltype( &VS::operator() )( VS, InputVertex )>::type,
+		typename std::result_of<decltype( &VS::operator() )( VS, InputVertex )>::type>;
 
 protected:
 
@@ -14,13 +22,16 @@ protected:
 
 };
 
-template<typename VertexT, typename VST, typename PST>
+template< typename VertexT, typename VST, typename PST, 
+typename GST = IRenderContext::DefaultGS<VertexT, VST> >
 class RenderContext : public IRenderContext {
 
 	using InputVertex = VertexT;
 	using VS = VST;
 	using PS = PST;
+	using GS = GST;
 	using VSOut = typename std::result_of<decltype( &VS::operator() )( VS, InputVertex )>::type;
+	using GSOut = typename std::result_of<decltype( &GS::operator() )( GS, size_t, VSOut, VSOut, VSOut )>::type::value_type;
 	 
 public:
 
@@ -55,11 +66,14 @@ public:
 	const Viewport &GetViewport() const {
 		return viewport;
 	}
-	ClippingCullingUnit<VSOut> &GetClippingCullingUnit() {
+	ClippingCullingUnit<GSOut> &GetClippingCullingUnit() {
 		return clipCullUnit;
 	}
 	VS &GetVertexShaderData() {
 		return vs;
+	}
+	GS &GetGeometryShaderData() {
+		return gs;
 	}
 	PS &GetPixelShaderData() {
 		return ps;
@@ -71,10 +85,13 @@ private:
 	std::vector<size_t> indices;
 
 	VS vs;
+	GS gs;
 	PS ps;
 
+	int triangleId = 0;
+
 	Viewport viewport;
-	ClippingCullingUnit<VSOut> clipCullUnit;
+	ClippingCullingUnit<GSOut> clipCullUnit;
 
 	void Draw( RenderPipeline &pipeline ) override {
 		pipeline.DrawCall( *this );

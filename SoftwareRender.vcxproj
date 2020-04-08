@@ -224,6 +224,8 @@
     <ClInclude Include="src\gfx\core\RenderPipeline.h" />
     <ClInclude Include="src\gfx\context\TextureBitmap.h" />
     <ClInclude Include="src\gfx\context\TextureSampler.h" />
+    <ClInclude Include="src\gfx\shader\DefaultGeometryShader.h" />
+    <ClInclude Include="src\gfx\shader\FaceColorGeometryShader.h" />
     <ClInclude Include="src\gfx\shader\SingleColorPixelShader.h" />
     <ClInclude Include="src\gfx\shader\TexturePixelShader.h" />
     <ClInclude Include="src\gfx\shader\VertexColorPixelShader.h" />

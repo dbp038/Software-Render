@@ -13,6 +13,8 @@ class RenderPipeline {
 	using PS = typename CtxType::PS;
 	template<typename CtxType>
 	using VSOut = typename CtxType::VSOut;
+	template<typename CtxType>
+	using GSOut = typename CtxType::GSOut;
 
 public:
 
@@ -55,19 +57,23 @@ private:
 	template<typename CtxType>
 	void PrimitiveAssemblyStage( CtxType &ctx, std::vector<VSOut<CtxType>> &vertices, const std::vector<size_t> &indices ) {
 		const Vector3f cameraView( 0.0f, 0.0f, 1.0f );
+		size_t tid = 0;
 		for ( size_t i = 0; i < indices.size(); i += 3 ) {
 			// assemble triangle
 			VSOut<CtxType> &v0 = vertices[ indices[ i ] ];
 			VSOut<CtxType> &v1 = vertices[ indices[ i + 1 ] ];
 			VSOut<CtxType> &v2 = vertices[ indices[ i + 2 ] ];
 
-			VertexPostProcessStage( ctx, v0, v1, v2 );
+			VertexPostProcessStage( ctx, ctx.gs( tid++, v0, v1, v2 ) );
 		}
 	}
 
 
 	template<typename CtxType>
-	void VertexPostProcessStage( CtxType &ctx, const VSOut<CtxType> &v0, const VSOut<CtxType> &v1, const VSOut<CtxType> &v2 ) {
+	void VertexPostProcessStage( CtxType &ctx, const std::array<GSOut<CtxType>, 3> &triangle ) {
+		const GSOut<CtxType> &v0 = triangle[ 0 ];
+		const GSOut<CtxType> &v1 = triangle[ 1 ];
+		const GSOut<CtxType> &v2 = triangle[ 2 ];
 		// Geometry based clipping and culling
 		int i;
 		auto &clipCullUnit = ctx.GetClippingCullingUnit();
@@ -85,7 +91,7 @@ private:
 		clipCullUnit.ClipCullNegativeYAxis( -1.0f );
 		clipCullUnit.ClipCullPositiveYAxis( 1.0f );
 
-		VSOut<CtxType> newV0, newV1, newV2;
+		GSOut<CtxType> newV0, newV1, newV2;
 		const Viewport &vp = ctx.GetViewport();
 		for ( i = 0; i < clipCullUnit.GetTriangleCount(); i++ ) {
 			// perform backface culling
@@ -104,13 +110,13 @@ private:
 	}
 
 	template<typename CtxType>
-	void RasterizationStage( CtxType &ctx, const VSOut<CtxType> &v0, const VSOut<CtxType> &v1, const VSOut<CtxType> &v2 ) {
+	void RasterizationStage( CtxType &ctx, const GSOut<CtxType> &v0, const GSOut<CtxType> &v1, const GSOut<CtxType> &v2 ) {
 		DrawTriangle( ctx, v0, v1, v2 );
 		// pixel shader is executed inside DrawTriangle
 	}
 
 	template<typename CtxType>
-	void PixelShaderStage( CtxType &ctx, Color *pBufferPosition, VSOut<CtxType> vtx ) {
+	void PixelShaderStage( CtxType &ctx, Color *pBufferPosition, GSOut<CtxType> vtx ) {
 		PS<CtxType> &pixelShader = ctx.GetPixelShaderData();
 		// perspective correction:
 		// revert perspective divide to avoid texture warping
@@ -136,11 +142,11 @@ private:
 	}
 
 	template<typename CtxType>
-	void DrawTriangle( CtxType &ctx, const VSOut<CtxType> &v0, const VSOut<CtxType> &v1, const VSOut<CtxType> &v2 ) {
-		std::array<const VSOut<CtxType> *, 3> orderedVertices;
-		const VSOut<CtxType> *pvEdge = &v0;
-		const VSOut<CtxType> *pvLeft = &v1;
-		const VSOut<CtxType> *pvRight = &v2;
+	void DrawTriangle( CtxType &ctx, const GSOut<CtxType> &v0, const GSOut<CtxType> &v1, const GSOut<CtxType> &v2 ) {
+		std::array<const GSOut<CtxType> *, 3> orderedVertices;
+		const GSOut<CtxType> *pvEdge = &v0;
+		const GSOut<CtxType> *pvLeft = &v1;
+		const GSOut<CtxType> *pvRight = &v2;
 
 		// order from vertices lowermost to uppermost (screen position)
 		// assign v0 as the first one for now
@@ -196,7 +202,7 @@ private:
 		else {
 			// create another vertex to split the triangle and interpolate its position
 			// along the opposite side
-			VSOut<CtxType> newVertex = *orderedVertices[ 0 ];
+			GSOut<CtxType> newVertex = *orderedVertices[ 0 ];
 			float p =
 				( orderedVertices[ 0 ]->position.y() - orderedVertices[ 1 ]->position.y() )
 				/
@@ -224,8 +230,8 @@ private:
 	}
 
 	template<typename CtxType>
-	void DrawScanlineTriangle( CtxType &ctx, const VSOut<CtxType> &vEdge, const VSOut<CtxType> &vLeft, const VSOut<CtxType> &vRight ) {
-		VSOut<CtxType> scanlineStartPos, scanlineEndPos, currentPos, horizontalIncr, leftIncr, rightIncr;
+	void DrawScanlineTriangle( CtxType &ctx, const GSOut<CtxType> &vEdge, const GSOut<CtxType> &vLeft, const GSOut<CtxType> &vRight ) {
+		GSOut<CtxType> scanlineStartPos, scanlineEndPos, currentPos, horizontalIncr, leftIncr, rightIncr;
 		float deltaDrawPercentage, yStart, yLimit;
 		int rightLimit, width = rt.GetWidth(), horizontalOffset;
 		Color *pBuffer = reinterpret_cast<Color *>( rt.GetBuffer() );
