@@ -35,6 +35,16 @@ public:
 	void ClipCullPositiveZAxis( float threshold ) {
 		ClipCullWithAxis( Z_AXIS, threshold, greaterThan, lessThan );
 	}
+	bool IsCurrentTriangleBackfaced() {
+		int nextVertex = 0;
+		const Vector3f *pV0 = reinterpret_cast<const Vector3f *>( &polygon[ nextVertex ].vertex.position );
+		nextVertex = polygon[ nextTriangleVertex ].next;
+		const Vector3f *pV1 = reinterpret_cast<const Vector3f *>( &polygon[ nextVertex ].vertex.position );
+		nextVertex = polygon[ nextVertex ].next;
+		const Vector3f *pV2 = reinterpret_cast<const Vector3f *>( &polygon[ nextVertex ].vertex.position );
+		// all polygon vertices share the same plane so we only need first three
+		return ( *pV1 - *pV0 ).cross( *pV2 - *pV0 ).dot( Vector3f( 0.0f, 0.0f, 1.0f ) ) >= 0.0f;
+	}
 
 	int GetPolygonSize() const {
 		return polygonSize;
@@ -45,12 +55,17 @@ public:
 	int GetTriangleCount() const {
 		return polygonSize - 2;
 	}
-	void GetNextTriangle( Vertex &v0, Vertex &v1, Vertex &v2 ) {
-		nextTriangleVertex = polygon[ nextTriangleVertex ].next;
+	void GetCurrentTriangle( Vertex &v0, Vertex &v1, Vertex &v2 ) {
 		// using fan triangulation
-		v0 = polygon[ 0 ].vertex;
-		v1 = polygon[ nextTriangleVertex ].vertex;
-		v2 = polygon[ polygon[ nextTriangleVertex ].next ].vertex;
+		int nextVertex = 0;
+		v0 = polygon[ nextVertex ].vertex;
+		nextVertex = polygon[ nextTriangleVertex ].next;
+		v1 = polygon[ nextVertex ].vertex;
+		nextVertex = polygon[ nextVertex ].next;
+		v2 = polygon[ nextVertex ].vertex;
+	}
+	void NextTriangle() {
+		nextTriangleVertex = polygon[ nextTriangleVertex ].next;
 	}
 
 private:

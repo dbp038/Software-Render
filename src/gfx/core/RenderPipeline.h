@@ -88,9 +88,10 @@ private:
 		VSOut<CtxType> newV0, newV1, newV2;
 		const Viewport &vp = ctx.GetViewport();
 		for ( i = 0; i < clipCullUnit.GetTriangleCount(); i++ ) {
-			clipCullUnit.GetNextTriangle( newV0, newV1, newV2 );
+			// perform backface culling
+			if ( !clipCullUnit.IsCurrentTriangleBackfaced() ) {
+				clipCullUnit.GetCurrentTriangle( newV0, newV1, newV2 );
 
-			if ( !IsTriangleBackFaced( newV0.position, newV1.position, newV2.position ) ) {
 				// perform screen transformation (normalized coordinates -> pixels in screen)
 				vp.Transform( newV0.position );
 				vp.Transform( newV1.position );
@@ -98,6 +99,7 @@ private:
 
 				RasterizationStage( ctx, newV0, newV1, newV2 );
 			}
+			clipCullUnit.NextTriangle();
 		}
 	}
 
@@ -127,13 +129,6 @@ private:
 	void OutputMergerStage( CtxType &ctx, const Color &newColor, Color *pOldColorInBuffer ) {
 		// TODO: implment z-buffer test
 		*pOldColorInBuffer = newColor;
-	}
-
-	bool IsTriangleBackFaced( const Vector4f &v0, const Vector4f &v1, const Vector4f &v2 ) {
-		const Vector3f *pV0 = reinterpret_cast<const Vector3f *>( &v0 );
-		const Vector3f *pV1 = reinterpret_cast<const Vector3f *>( &v1 );
-		const Vector3f *pV2 = reinterpret_cast<const Vector3f *>( &v2 );
-		return ( *pV1 - *pV0 ).cross( *pV2 - *pV0 ).dot( Vector3f( 0.0f, 0.0f, 1.0f ) ) >= 0.0f;
 	}
 
 	template<typename VType>
