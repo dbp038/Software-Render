@@ -210,6 +210,7 @@
   <ItemGroup>
     <ClInclude Include="src\app\resources\FileLoader.h" />
     <ClInclude Include="src\app\resources\stb_image.h" />
+    <ClInclude Include="src\gfx\ClippingCullingUnit.h" />
     <ClInclude Include="src\gfx\Color.h" />
     <ClInclude Include="src\app\Application.h" />
     <ClInclude Include="src\app\ApplicationException.h" />

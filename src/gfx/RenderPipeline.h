@@ -36,16 +36,6 @@ private:
 
 	RenderTarget &rt;
 
-	template <typename VType>
-	static inline auto VertexLerp( const VType &v1, const VType &v2, const float p ) {
-		auto vOut = v1;
-		vOut *= -1;
-		vOut += v2;
-		vOut *= p;
-		vOut += v1;
-		return vOut;
-	}
-
 	template<typename CtxType>
 	void VertexProcessingStage( CtxType &ctx ) {
 		auto &verticesIn = ctx.GetVertices();
@@ -71,28 +61,50 @@ private:
 			VSOut<CtxType> &v1 = vertices[ indices[ i + 1 ] ];
 			VSOut<CtxType> &v2 = vertices[ indices[ i + 2 ] ];
 
-			// apply backface culling
-			if ( IsTriangleBackFaced( v0.position, v1.position, v2.position, cameraView ) )
-				VertexPostProcessStage( ctx, v0, v1, v2 );
+			VertexPostProcessStage( ctx, v0, v1, v2 );
 		}
 	}
 
 
 	template<typename CtxType>
-	void VertexPostProcessStage( CtxType &ctx, VSOut<CtxType> v0, VSOut<CtxType> v1, VSOut<CtxType> v2 ) {
-		// TODO: implement primitive clipping
+	void VertexPostProcessStage( CtxType &ctx, const VSOut<CtxType> &v0, const VSOut<CtxType> &v1, const VSOut<CtxType> &v2 ) {
+		// Geometry based clipping and culling
+		int i;
+		auto &clipCullUnit = ctx.GetClippingCullingUnit();
+		clipCullUnit.SetInitialTriangle( v0, v1, v2 );
 
-		ApplyPerspectiveDivide( v0 );
-		ApplyPerspectiveDivide( v1 );
-		ApplyPerspectiveDivide( v2 );
+		// we do clipping for znear before the perspective divide to avoid problems when
+		// trying to interpolate too close to the origin point
+		clipCullUnit.ClipCullNegativeZAxis( 0.0f );
+		for ( i = 0; i < clipCullUnit.GetPolygonSize(); i++ ) {
+			ApplyPerspectiveDivide( clipCullUnit.GetPolygonVertex( i ) );
+		}
+		clipCullUnit.ClipCullPositiveZAxis( 1.0f );
+		clipCullUnit.ClipCullNegativeXAxis( -1.0f );
+		clipCullUnit.ClipCullPositiveXAxis( 1.0f );
+		clipCullUnit.ClipCullNegativeYAxis( -1.0f );
+		clipCullUnit.ClipCullPositiveYAxis( 1.0f );
 
-		// transform normalized coordinates to pixels in screen
+		VSOut<CtxType> newV0, newV1, newV2;
 		const Viewport &vp = ctx.GetViewport();
-		vp.Transform( v0.position );
-		vp.Transform( v1.position );
-		vp.Transform( v2.position );
+		for ( i = 0; i < clipCullUnit.GetTriangleCount(); i++ ) {
+			clipCullUnit.GetNextTriangle( newV0, newV1, newV2 );
 
-		RasterizationStage( ctx, v0, v1, v2 );
+			if ( !IsTriangleBackFaced( newV0.position, newV1.position, newV2.position ) ) {
+				// perform screen transformation (normalized coordinates -> pixels in screen)
+				vp.Transform( newV0.position );
+				vp.Transform( newV1.position );
+				vp.Transform( newV2.position );
+
+				RasterizationStage( ctx, newV0, newV1, newV2 );
+			}
+		}
+	}
+
+	template<typename CtxType>
+	void PrimitiveCullingStage( CtxType &ctx, const VSOut<CtxType> &v0, const VSOut<CtxType> &v1, const VSOut<CtxType> &v2 ) {
+		DrawTriangle( ctx, v0, v1, v2 );
+		// pixel shader is executed inside DrawTriangle
 	}
 
 	template<typename CtxType>
@@ -105,7 +117,7 @@ private:
 	void PixelShaderStage( CtxType &ctx, Color *pBufferPosition, VSOut<CtxType> vtx ) {
 		PS<CtxType> &pixelShader = ctx.GetPixelShaderData();
 		// perspective correction:
-		// transform vertex to homo-space coordinates to avoid texture warping
+		// revert perspective divide to avoid texture warping
 		float zInverse = 1.0f / vtx.position.w();
 		vtx *= zInverse;
 		OutputMergerStage( ctx, pixelShader( vtx ), pBufferPosition );
@@ -117,16 +129,11 @@ private:
 		*pOldColorInBuffer = newColor;
 	}
 
-	bool IsTriangleBackFaced( const Vector4f &v0, const Vector4f &v1, const Vector4f &v2, const Vector3f &cameraDirection ) {
-		// transform to homo-space coordinates
-		Vector4f homoV0 = v0 / v0.w();
-		Vector4f homoV1 = v1 / v1.w();
-		Vector4f homoV2 = v2 / v2.w();
-		
-		const Vector3f *pV0 = reinterpret_cast<const Vector3f *>( &homoV0 );
-		const Vector3f *pV1 = reinterpret_cast<const Vector3f *>( &homoV1 );
-		const Vector3f *pV2 = reinterpret_cast<const Vector3f *>( &homoV2 );
-		return ( *pV1 - *pV0 ).cross( *pV2 - *pV0 ).dot( cameraDirection ) < 0.0f;
+	bool IsTriangleBackFaced( const Vector4f &v0, const Vector4f &v1, const Vector4f &v2 ) {
+		const Vector3f *pV0 = reinterpret_cast<const Vector3f *>( &v0 );
+		const Vector3f *pV1 = reinterpret_cast<const Vector3f *>( &v1 );
+		const Vector3f *pV2 = reinterpret_cast<const Vector3f *>( &v2 );
+		return ( *pV1 - *pV0 ).cross( *pV2 - *pV0 ).dot( Vector3f( 0.0f, 0.0f, 1.0f ) ) >= 0.0f;
 	}
 
 	template<typename VType>

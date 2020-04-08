@@ -16,6 +16,8 @@ protected:
 template<typename Vertex, typename VS, typename PS>
 class RenderContext : public IRenderContext {
 
+	using VSOut = typename std::result_of<decltype( &VS::operator() )( VS, InputVertex )>::type;
+	 
 public:
 
 	// could be avoided but it would require more type inference in RenderPipeline
@@ -49,6 +51,9 @@ public:
 	const Viewport &GetViewport() const {
 		return viewport;
 	}
+	ClippingCullingUnit<VSOut> &GetClippingCullingUnit() {
+		return clipCullUnit;
+	}
 	VS &GetVertexShaderData() {
 		return vs;
 	}
@@ -65,6 +70,7 @@ private:
 	PS ps;
 
 	Viewport viewport;
+	ClippingCullingUnit<VSOut> clipCullUnit;
 
 	void Draw( RenderPipeline &pipeline ) override {
 		pipeline.DrawCall( *this );

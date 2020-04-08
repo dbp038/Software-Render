@@ -26,6 +26,16 @@ inline auto lerp( const T &v1, const T &v2, const float p ) {
 	return ( v2 - v1 ) * p + v1;
 }
 
+template <typename T>
+inline auto VertexLerp( const T &v1, const T &v2, const float p ) {
+	auto vOut = v1;
+	vOut *= -1;
+	vOut += v2;
+	vOut *= p;
+	vOut += v1;
+	return vOut;
+}
+
 namespace Matrices {
 
 	inline Matrix3f Translation2D3f( float x, float y ) {
