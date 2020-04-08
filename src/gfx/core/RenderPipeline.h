@@ -104,12 +104,6 @@ private:
 	}
 
 	template<typename CtxType>
-	void PrimitiveCullingStage( CtxType &ctx, const VSOut<CtxType> &v0, const VSOut<CtxType> &v1, const VSOut<CtxType> &v2 ) {
-		DrawTriangle( ctx, v0, v1, v2 );
-		// pixel shader is executed inside DrawTriangle
-	}
-
-	template<typename CtxType>
 	void RasterizationStage( CtxType &ctx, const VSOut<CtxType> &v0, const VSOut<CtxType> &v1, const VSOut<CtxType> &v2 ) {
 		DrawTriangle( ctx, v0, v1, v2 );
 		// pixel shader is executed inside DrawTriangle
