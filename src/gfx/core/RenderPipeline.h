@@ -127,7 +127,7 @@ private:
 
 	template<typename CtxType>
 	void OutputMergerStage( CtxType &ctx, const Color &newColor, Color *pOldColorInBuffer ) {
-		// TODO: implment z-buffer test
+		// zbuffer test should be here instead of being in the rasterization stage
 		*pOldColorInBuffer = newColor;
 	}
 
@@ -300,7 +300,12 @@ private:
 				if ( pCurrentPixel != pEndPixel ) {
 					// draw single scanline loop
 					for ( ; pCurrentPixel <= pEndPixel; pCurrentPixel++ ) {
-						PixelShaderStage( ctx, pCurrentPixel, currentPos );
+						// zbuffer test
+						// this should be tested at output merger stage, but texture interpolation is
+						// expensive for the cpu so there's no need to do that if we know the pixel
+						// is going to be occluded
+						if ( ctx.zbuffer.TestAndSet( pCurrentPixel - pBuffer, currentPos.position.z() ) )
+							PixelShaderStage( ctx, pCurrentPixel, currentPos );
 						// keep track of the current position in viewport
 						currentPos += horizontalIncr;
 					}

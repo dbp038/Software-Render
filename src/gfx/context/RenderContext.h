@@ -3,6 +3,7 @@
 #include "gfx/core/RenderPipeline.h"
 #include "ClippingCullingUnit.h"
 #include "gfx/shader/DefaultGeometryShader.h"
+#include "DepthBuffer.h"
 
 class IRenderContext {
 
@@ -41,6 +42,9 @@ public:
 	RenderContext() : viewport( 0, 0 ) {}
 	RenderContext( const VS &vs, const PS &ps ) : vs( vs ), ps( ps ), viewport( 0, 0 ) {}
 
+	void BindDepthBuffer( const unsigned int width, const unsigned int height ) {
+		zbuffer.Create( width, height );
+	}
 	void BindVertexData( const std::vector<InputVertex> &vertList ) {
 		vertices = vertList;
 	}
@@ -78,6 +82,9 @@ public:
 	PS &GetPixelShaderData() {
 		return ps;
 	}
+	void ClearDepthBuffer() {
+		zbuffer.Clear();
+	}
 
 private:
 
@@ -92,6 +99,7 @@ private:
 
 	Viewport viewport;
 	ClippingCullingUnit<GSOut> clipCullUnit;
+	DepthBuffer zbuffer;
 
 	void Draw( RenderPipeline &pipeline ) override {
 		pipeline.DrawCall( *this );

@@ -190,6 +190,7 @@
     <ClCompile Include="src\app\Application.cpp" />
     <ClCompile Include="src\app\ApplicationException.cpp" />
     <ClCompile Include="src\app\resources\FileLoader.cpp" />
+    <ClCompile Include="src\gfx\context\DepthBuffer.cpp" />
     <ClCompile Include="src\gfx\core\Bitmap.cpp" />
     <ClCompile Include="src\game\ExampleScene.cpp" />
     <ClCompile Include="src\game\Game.cpp" />
@@ -213,6 +214,7 @@
     <ClInclude Include="src\app\resources\stb_image.h" />
     <ClInclude Include="src\app\resources\Model.h" />
     <ClInclude Include="src\gfx\context\ClippingCullingUnit.h" />
+    <ClInclude Include="src\gfx\context\DepthBuffer.h" />
     <ClInclude Include="src\gfx\core\Color.h" />
     <ClInclude Include="src\app\Application.h" />
     <ClInclude Include="src\app\ApplicationException.h" />
