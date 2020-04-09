@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "FileLoader.h"
+#include "OBJ_Loader.h"
 #include <fstream>
 
 bool FileLoader::FileExists( const std::string &filename ) {
@@ -28,4 +29,54 @@ std::string FileLoader::LoadTextFile( const std::string &filename ) {
 	}
 
 	return strStream.str();
+}
+
+void LoadIndices( objl::Loader &objLoader, std::vector<size_t> &indices ) {
+	const auto &objIndices = objLoader.LoadedIndices;
+
+	indices.reserve( objIndices.size() );
+	for ( const auto &idx : objIndices ) {
+		indices.push_back( size_t( idx ) );
+	}
+}
+
+Model<PosNVertex> FileLoader::LoadPosNModelFromFile( const std::string &path ) {
+	Model<PosNVertex> model;
+	objl::Loader objLoader;
+	objLoader.LoadFile( path );
+
+	const auto &objVertices = objLoader.LoadedVertices;
+	model.vertices.reserve( objVertices.size() );
+	for ( const auto &vert : objVertices ) {
+		model.vertices.push_back( 
+			PosNVertex{ 
+				Vector4f( vert.Position.X, vert.Position.Y, vert.Position.Z, 1.0f ),
+				Vector3f( vert.Normal.X, vert.Normal.Y, vert.Normal.Z )
+			} 
+		);
+	}
+
+	LoadIndices( objLoader, model.indices );
+	return model;
+}
+
+Model<PosNUvVertex> FileLoader::LoadPosNUvModelFromFile( const std::string &path ) {
+	Model<PosNUvVertex> model;
+	objl::Loader objLoader;
+	objLoader.LoadFile( path );
+
+	const auto &objVertices = objLoader.LoadedVertices;
+	model.vertices.reserve( objVertices.size() );
+	for ( const auto &vert : objVertices ) {
+		model.vertices.push_back( 
+			PosNUvVertex{ 
+				Vector4f( vert.Position.X, vert.Position.Y, vert.Position.Z, 1.0f ),
+				Vector3f( vert.Normal.X, vert.Normal.Y, vert.Normal.Z ),
+				Vector2f( vert.TextureCoordinate.X, vert.TextureCoordinate.Y)
+			} 
+		);
+	}
+
+	LoadIndices( objLoader, model.indices );
+	return model;
 }

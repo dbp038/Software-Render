@@ -209,7 +209,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\app\resources\FileLoader.h" />
+    <ClInclude Include="src\app\resources\OBJ_Loader.h" />
     <ClInclude Include="src\app\resources\stb_image.h" />
+    <ClInclude Include="src\app\resources\Model.h" />
     <ClInclude Include="src\gfx\context\ClippingCullingUnit.h" />
     <ClInclude Include="src\gfx\core\Color.h" />
     <ClInclude Include="src\app\Application.h" />
