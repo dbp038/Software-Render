@@ -56,6 +56,9 @@ public:
 	Color( float x, const Vector3f &colf )
 		:
 		Color( x, colf[ 0 ], colf[ 1 ], colf[ 2 ] ) {}
+	Color( const Vector3f &colf, float a )
+		:
+		Color( a, colf[ 0 ], colf[ 1 ], colf[ 2 ] ) {}
 	Color( const Vector4f &colf )
 		:
 		Color( colf[0], colf[1], colf[2], colf[3] ) {}
@@ -68,6 +71,17 @@ public:
 	}
 	bool	operator!=( const Color &rhs ) const {
 		return !( *this == rhs );
+	}
+	Color	operator*( const float &rhs ) const {
+		return Color(
+			std::clamp(GetA() * rhs , 0.0f, 255.0f), 
+			std::clamp(GetR() * rhs , 0.0f, 255.0f), 
+			std::clamp(GetG() * rhs , 0.0f, 255.0f),
+			std::clamp(GetB() * rhs , 0.0f, 255.0f)
+			);
+	}
+	Color	operator*=( const float &rhs ) {
+		return *this = *this * rhs;
 	}
 	constexpr unsigned char GetX() const {
 		return dword >> 24u;

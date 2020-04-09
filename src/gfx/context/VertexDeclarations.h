@@ -17,6 +17,23 @@ struct PosVertex {
 
 };
 
+struct PosNVertex : public PosVertex {
+
+	Vector3f normal;
+
+	PosNVertex &operator+=( const PosNVertex &rhs ) {
+		PosVertex::operator+=( rhs );
+		normal += rhs.normal;
+		return *this;
+	}
+	PosNVertex &operator*=( const float rhs ) {
+		PosVertex::operator*=( rhs );
+		normal *= rhs;
+		return *this;
+	}
+
+};
+
 struct PosColorVertex : public PosVertex {
 
 	Vector4f color;
@@ -45,6 +62,23 @@ struct PosUvVertex : public PosVertex {
 	}
 	PosUvVertex &operator*=( const float rhs ) {
 		PosVertex::operator*=( rhs );
+		uvs *= rhs;
+		return *this;
+	}
+
+};
+
+struct PosNUvVertex : public PosNVertex {
+
+	Vector2f uvs;
+
+	PosNUvVertex &operator+=( const PosNUvVertex &rhs ) {
+		PosNVertex::operator+=( rhs );
+		uvs += rhs.uvs;
+		return *this;
+	}
+	PosNUvVertex &operator*=( const float rhs ) {
+		PosNVertex::operator*=( rhs );
 		uvs *= rhs;
 		return *this;
 	}

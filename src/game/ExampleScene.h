@@ -20,6 +20,7 @@ private:
 	float rotationSpeed = 1.0f;
 	float xOffset = 0.0f, yOffset = 0.0f, zOffset = 0.0f;
 	
+	
 
 	std::string storedWindowName;
 	UnscaledTimer winTitleUpdater;
