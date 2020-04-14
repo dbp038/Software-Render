@@ -8,6 +8,7 @@ namespace FileLoader {
 	std::string LoadTextFile( const std::string &filename );
 
 	Model<PosNVertex> LoadPosNModelFromFile( const std::string &path );
+	Model<PosUvVertex> LoadPosUvModelFromFile( const std::string &path );
 	Model<PosNUvVertex> LoadPosNUvModelFromFile( const std::string &path );
 
 }

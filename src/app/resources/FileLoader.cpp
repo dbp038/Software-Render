@@ -60,6 +60,26 @@ Model<PosNVertex> FileLoader::LoadPosNModelFromFile( const std::string &path ) {
 	return model;
 }
 
+Model<PosUvVertex> FileLoader::LoadPosUvModelFromFile( const std::string &path ) {
+	Model<PosUvVertex> model;
+	objl::Loader objLoader;
+	objLoader.LoadFile( path );
+
+	const auto &objVertices = objLoader.LoadedVertices;
+	model.vertices.reserve( objVertices.size() );
+	for ( const auto &vert : objVertices ) {
+		model.vertices.push_back(
+			PosUvVertex{
+				Vector4f( vert.Position.X, vert.Position.Y, vert.Position.Z, 1.0f ),
+				Vector2f( vert.TextureCoordinate.X, vert.TextureCoordinate.Y )
+			}
+		);
+	}
+
+	LoadIndices( objLoader, model.indices );
+	return model;
+}
+
 Model<PosNUvVertex> FileLoader::LoadPosNUvModelFromFile( const std::string &path ) {
 	Model<PosNUvVertex> model;
 	objl::Loader objLoader;
