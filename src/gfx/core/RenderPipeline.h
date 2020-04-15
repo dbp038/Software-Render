@@ -92,16 +92,10 @@ private:
 		clipCullUnit.ClipCullPositiveYAxis( 1.0f );
 
 		GSOut<CtxType> newV0, newV1, newV2;
-		const Viewport &vp = ctx.GetViewport();
 		for ( i = 0; i < clipCullUnit.GetTriangleCount(); i++ ) {
 			// perform backface culling
 			if ( !clipCullUnit.IsCurrentTriangleBackfaced() ) {
 				clipCullUnit.GetCurrentTriangle( newV0, newV1, newV2 );
-
-				// perform screen transformation (normalized coordinates -> pixels in screen)
-				vp.Transform( newV0.position );
-				vp.Transform( newV1.position );
-				vp.Transform( newV2.position );
 
 				RasterizationStage( ctx, newV0, newV1, newV2 );
 			}
@@ -110,8 +104,18 @@ private:
 	}
 
 	template<typename CtxType>
-	void RasterizationStage( CtxType &ctx, const GSOut<CtxType> &v0, const GSOut<CtxType> &v1, const GSOut<CtxType> &v2 ) {
+	void RasterizationStage( CtxType &ctx, GSOut<CtxType> &v0, GSOut<CtxType> &v1, GSOut<CtxType> &v2 ) {
+		// perform screen transformation (normalized coordinates -> pixels in screen)
+		const Viewport &vp = ctx.GetViewport();
+		vp.Transform( v0.position );
+		vp.Transform( v1.position );
+		vp.Transform( v2.position );
+		
 		DrawTriangle( ctx, v0, v1, v2 );
+		
+		//DrawLine( v0.position.x(), v0.position.y(), v1.position.x(), v1.position.y(), Colors::White );
+		//DrawLine( v1.position.x(), v1.position.y(), v2.position.x(), v2.position.y(), Colors::White );
+		//DrawLine( v2.position.x(), v2.position.y(), v0.position.x(), v0.position.y(), Colors::White );
 		// pixel shader is executed inside DrawTriangle
 	}
 
@@ -257,33 +261,15 @@ private:
 		{
 			// calculate how much draw percentage represents a 1 pixel increment in the y axis
 			float verticalPixelIncrement = 1.0f / abs( vEdge.position.y() - vLeft.position.y() );
-			// formula:
-			//	leftIncr = ( vEdge - vLeft ) / abs( vEdge.position.y() - vLeft.position.y() );
-			leftIncrement = vLeft;
-			leftIncrement *= -1;
-			leftIncrement += vEdge;
-			leftIncrement *= verticalPixelIncrement;
-			// formula:
-			//	rightIncr = ( vEdge - vRight ) / triangleHeight;
-			rightIncrement = vRight;
-			rightIncrement *= -1;
-			rightIncrement += vEdge;
-			rightIncrement *= verticalPixelIncrement;
-			// we do it like this so we don't have to define a lot of operators for 
-			// every vertex declaration, sorry if it's not easy to understand
+			
+			GetVertexIncrement( leftIncrement, vLeft, vEdge, verticalPixelIncrement );
+			GetVertexIncrement( rightIncrement, vRight, vEdge, verticalPixelIncrement );
 		}
 
-		// calculate how much represents a 1 pixel increment in viewport space 
+		// calculate horizontal increments for the triangle
 		{
-			// formula:
-			// horizontalIncr = ( vRight - vLeft ) * 
-			// ( 1.0f / ( vRight.position.x() - vLeft.position.x() ) );
-			horizontalIncrement = vLeft;
-			horizontalIncrement *= -1;
-			horizontalIncrement += vRight;
-			horizontalIncrement *= 1.0f / ( vRight.position.x() - vLeft.position.x() );
-			// we do it like this so we don't have to define a lot of operators for 
-			// every vertex declaration, sorry if it's not easy to understand
+			float horizontalPixelIncrement = 1.0f / ( vRight.position.x() - vLeft.position.x() );
+			GetVertexIncrement( horizontalIncrement, vLeft, vRight, horizontalPixelIncrement );
 		}
 
 		// align scanline starting and ending positions with pixel positions defined
@@ -313,7 +299,6 @@ private:
 				// this should be tested at output merger stage, but texture interpolation is
 				// expensive for the cpu so there's no need to do that if we know the pixel
 				// is going to be occluded
-
 				if ( ctx.zbuffer.TestAndSet( pCurrentPixel - pBuffer, currentPos.position.z() ) )
 					PixelShaderStage( ctx, pCurrentPixel, currentPos );
 				// keep track of the current position in viewport
@@ -326,4 +311,14 @@ private:
 		}
 	}
 
+	// applies the formula ( v1 - v0 ) * incrementFactor
+	template<typename VType>
+	void GetVertexIncrement( VType &vOut, const VType &v0, const VType &v1, float incrementFactor ) {
+		// we do it like this so we don't have to define a lot of operators for 
+		// every vertex declaration
+		vOut = v0;
+		vOut *= -1;
+		vOut += v1;
+		vOut *= incrementFactor;
+	}
 };
