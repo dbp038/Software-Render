@@ -2,6 +2,8 @@
 #include "RenderTarget.h"
 #include "gfx/context/Viewport.h"
 #include "Color.h"
+#include "ClippingCullingUnit.h"
+#include <omp.h>
 
 class RenderPipeline {
 
@@ -44,10 +46,11 @@ private:
 		auto &indicesIn = ctx.GetIndices();
 		VS<CtxType> &vertexShader = ctx.GetVertexShaderData();
 		std::vector<VSOut<CtxType>> vertices;
-		vertices.reserve( indicesIn.size() );
+		vertices.resize( verticesIn.size() );
 		// execute vertex shader for each vertex
-		for ( auto &vtx : verticesIn ) {
-			vertices.push_back( vertexShader( vtx ) );
+#pragma omp parallel for
+		for ( int i = 0; i < verticesIn.size(); i++ ) {
+			vertices[ i ] = vertexShader( verticesIn[ i ] );
 		}
 
 		PrimitiveAssemblyStage( ctx, vertices, indicesIn );
@@ -56,27 +59,73 @@ private:
 	// triangles only for now
 	template<typename CtxType>
 	void PrimitiveAssemblyStage( CtxType &ctx, std::vector<VSOut<CtxType>> &vertices, const std::vector<size_t> &indices ) {
-		const Vector3f cameraView( 0.0f, 0.0f, 1.0f );
-		size_t tid = 0;
-		for ( size_t i = 0; i < indices.size(); i += 3 ) {
-			// assemble triangle
-			VSOut<CtxType> &v0 = vertices[ indices[ i ] ];
-			VSOut<CtxType> &v1 = vertices[ indices[ i + 1 ] ];
-			VSOut<CtxType> &v2 = vertices[ indices[ i + 2 ] ];
+		size_t size = indices.size();
+		int threadsDone = 0, nextTriangle = 0;
 
-			VertexPostProcessStage( ctx, ctx.gs( tid++, v0, v1, v2 ) );
+		struct ThreadSchedule {
+			size_t assignedTriangle;
+			bool hasWork;
+		};
+		int numThreads = omp_get_max_threads();
+		std::vector<ThreadSchedule> threads;
+		threads.resize( size_t( numThreads ) - 1 );
+
+		for ( int i = 0; i < numThreads - 1; i++ ) {
+			threads[ i ].assignedTriangle = nextTriangle;
+			threads[ i ].hasWork = true;
+			nextTriangle++;
+		}
+#pragma omp parallel num_threads(numThreads)
+		{
+			int threadId = omp_get_thread_num();
+			if ( threadId == numThreads - 1 ) {
+				// this thread is going to manage the work of the other threads
+				// wait until all threads finished their work
+				while ( threadsDone < numThreads - 1 ) {
+					for ( int i = 0; i < numThreads - 1; i++ ) {
+						if ( !threads[ i ].hasWork ) {
+							// assign the next triangle to a thread
+							threads[ i ].assignedTriangle = nextTriangle;
+							nextTriangle++;
+							threads[ i ].hasWork = true;
+						}
+					}
+				}
+			}
+			else {
+				// all other threads are going to process triangles
+				ClippingCullingUnit<GSOut<CtxType>> clipCullUnit;
+				int privateTriangle = 0;
+				size_t vertexIdx = 0;
+				while ( true ) {
+					if ( threads[ threadId ].hasWork ) {
+						privateTriangle = threads[ threadId ].assignedTriangle;
+						vertexIdx = privateTriangle * 3;
+						threads[ threadId ].hasWork = false;
+
+						if ( vertexIdx >= size )
+							break;
+
+						VSOut<CtxType> &v0 = vertices[ indices[ vertexIdx ] ];
+						VSOut<CtxType> &v1 = vertices[ indices[ ++vertexIdx ] ];
+						VSOut<CtxType> &v2 = vertices[ indices[ ++vertexIdx ] ];
+
+						VertexPostProcessStage( ctx, ctx.gs( privateTriangle, v0, v1, v2 ), clipCullUnit );
+					}
+				}
+			}
+#pragma omp atomic
+			threadsDone++;
 		}
 	}
 
-
 	template<typename CtxType>
-	void VertexPostProcessStage( CtxType &ctx, const std::array<GSOut<CtxType>, 3> &triangle ) {
+	void VertexPostProcessStage( CtxType &ctx, const std::array<GSOut<CtxType>, 3> &triangle, ClippingCullingUnit<GSOut<CtxType>> &clipCullUnit ) {
 		const GSOut<CtxType> &v0 = triangle[ 0 ];
 		const GSOut<CtxType> &v1 = triangle[ 1 ];
 		const GSOut<CtxType> &v2 = triangle[ 2 ];
 		// Geometry based clipping and culling
 		int i;
-		auto &clipCullUnit = ctx.GetClippingCullingUnit();
 		clipCullUnit.SetInitialTriangle( v0, v1, v2 );
 
 		// we do clipping for znear before the perspective divide to avoid problems when

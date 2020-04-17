@@ -107,6 +107,7 @@
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>$(ProjectDir)eigen\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
+      <AdditionalOptions>/openmp /Zc:twoPhase-</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -128,6 +129,7 @@
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>$(ProjectDir)eigen\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <EnableEnhancedInstructionSet>NotSet</EnableEnhancedInstructionSet>
+      <AdditionalOptions>/openmp /Zc:twoPhase-</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -152,6 +154,7 @@
       <AdditionalIncludeDirectories>$(ProjectDir)eigen\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <EnableEnhancedInstructionSet>AdvancedVectorExtensions2</EnableEnhancedInstructionSet>
       <Optimization>MaxSpeed</Optimization>
+      <AdditionalOptions>/openmp /Zc:twoPhase-</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -178,6 +181,7 @@
       <AdditionalIncludeDirectories>$(ProjectDir)eigen\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <EnableEnhancedInstructionSet>AdvancedVectorExtensions2</EnableEnhancedInstructionSet>
       <Optimization>MaxSpeed</Optimization>
+      <AdditionalOptions>/openmp /Zc:twoPhase-</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -213,7 +217,7 @@
     <ClInclude Include="src\app\resources\OBJ_Loader.h" />
     <ClInclude Include="src\app\resources\stb_image.h" />
     <ClInclude Include="src\app\resources\Model.h" />
-    <ClInclude Include="src\gfx\context\ClippingCullingUnit.h" />
+    <ClInclude Include="src\gfx\core\ClippingCullingUnit.h" />
     <ClInclude Include="src\gfx\context\DepthBuffer.h" />
     <ClInclude Include="src\gfx\core\Color.h" />
     <ClInclude Include="src\app\Application.h" />

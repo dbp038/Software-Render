@@ -1,7 +1,6 @@
 #pragma once
 #include "Viewport.h"
 #include "gfx/core/RenderPipeline.h"
-#include "ClippingCullingUnit.h"
 #include "gfx/shader/DefaultGeometryShader.h"
 #include "DepthBuffer.h"
 
@@ -70,9 +69,6 @@ public:
 	const Viewport &GetViewport() const {
 		return viewport;
 	}
-	ClippingCullingUnit<GSOut> &GetClippingCullingUnit() {
-		return clipCullUnit;
-	}
 	VS &GetVertexShaderData() {
 		return vs;
 	}
@@ -98,7 +94,6 @@ private:
 	int triangleId = 0;
 
 	Viewport viewport;
-	ClippingCullingUnit<GSOut> clipCullUnit;
 	DepthBuffer zbuffer;
 
 	void Draw( RenderPipeline &pipeline ) override {
