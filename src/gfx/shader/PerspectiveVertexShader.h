@@ -1,12 +1,11 @@
 #pragma once
 
-template<typename Input, typename Output>
 struct PerspectiveVertexShader {
 
 	Matrix4f transformMatrix, perspectiveMatrix;
 
-	Output operator()( const Input &vtx ) {
-		Output vsOut = vtx;
+	PosNUvVertex operator()( const PosNUvVertex &vtx ) {
+		PosNUvVertex vsOut = vtx;
 		vsOut.position = transformMatrix * vsOut.position;
 		Vector4f normal( vsOut.normal.x(), vsOut.normal.y(), vsOut.normal.z(), 0.0f );
 		normal = transformMatrix * normal;

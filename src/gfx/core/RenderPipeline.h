@@ -287,9 +287,9 @@ private:
 			// position buffer to the start of the current row in the buffer
 			pCurrentPixel = &pStartingPixel[ currentScanline * nextRowOffset ];
 			// compute buffer end position in scanline
-			// -1.499f and not -1.5f to make slightly larger scanline to counter some float
+			// -1.49f and not -1.5f to make slightly larger scanline to counter some float
 			// imprecisions due to too many interpolations
-			pScanlineEnd = pCurrentPixel + size_t( ceilf( scanlineEndPos.position.x() - 1.499f ) );
+			pScanlineEnd = pCurrentPixel + size_t( ceilf( scanlineEndPos.position.x() - 1.49f ) );
 			// compute buffer start position in scanline
 			pCurrentPixel += size_t( ceilf( scanlineStartPos.position.x() - 0.5f ) );	// left part of the top-left rule
 

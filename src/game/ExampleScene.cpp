@@ -12,7 +12,7 @@ using VertexType = PosNUvVertex;
 
 using Sampler = TextureLinearSampler;
 
-using VS = PerspectiveVertexShader<VertexType, VertexType>;
+using VS = PerspectiveVertexShader;
 using PS = BasicIlluminationTexturePixelShader<Sampler>;
 
 using CtxType = RenderContext<VertexType, VS, PS>;
@@ -130,7 +130,7 @@ void ExampleScene::Draw( Graphics &gfx ) {
 	// apply transformations to model
 	auto &psBuffer = ctx.GetVertexShaderData();
 	psBuffer.transformMatrix = Matrices::RotationYawPitchRoll4f( yaw, pitch, roll ) * Matrices::Scale4f(1.0f);
-	psBuffer.transformMatrix = Matrices::Translation4f( xOffset, yOffset, zOffset + 2.0f ) * psBuffer.transformMatrix;
+	psBuffer.transformMatrix = Matrices::Translation4f( xOffset, yOffset, zOffset + 1.5f ) * psBuffer.transformMatrix;
 	ctx.BindVertexShaderBuffer( psBuffer ); // not technically needed
 
 	// apply transformations to light
