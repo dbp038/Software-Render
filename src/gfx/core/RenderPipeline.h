@@ -25,7 +25,7 @@ public:
 	void DrawCall( CtxType &ctx ) {
 
 		VertexProcessingStage( ctx );
-		// - Primitive Assembly stage ( I decide where the primitive assembly stage goes )
+		// - Primitive Assembly stage
 		// - Vertex Post-Processing stage
 		// - RaSterization stage
 		// - Pixel Shader stage
@@ -53,7 +53,6 @@ private:
 		PrimitiveAssemblyStage( ctx, vertices, indicesIn );
 	}
 
-	// triangles only for now
 	template<typename CtxType>
 	void PrimitiveAssemblyStage( CtxType &ctx, std::vector<VSOut<CtxType>> &vertices, const std::vector<size_t> &indices ) {
 		const Vector3f cameraView( 0.0f, 0.0f, 1.0f );
@@ -64,6 +63,7 @@ private:
 			VSOut<CtxType> &v1 = vertices[ indices[ i + 1 ] ];
 			VSOut<CtxType> &v2 = vertices[ indices[ i + 2 ] ];
 
+			// execute geometry shader too
 			VertexPostProcessStage( ctx, ctx.gs( tid++, v0, v1, v2 ) );
 		}
 	}
@@ -112,11 +112,12 @@ private:
 		vp.Transform( v2.position );
 		
 		DrawTriangle( ctx, v0, v1, v2 );
+		// pixel shader is executed inside DrawTriangle
 		
+		// Draw a white wireframe if you want
 		//DrawLine( v0.position.x(), v0.position.y(), v1.position.x(), v1.position.y(), Colors::White );
 		//DrawLine( v1.position.x(), v1.position.y(), v2.position.x(), v2.position.y(), Colors::White );
 		//DrawLine( v2.position.x(), v2.position.y(), v0.position.x(), v0.position.y(), Colors::White );
-		// pixel shader is executed inside DrawTriangle
 	}
 
 	template<typename CtxType>
@@ -152,7 +153,7 @@ private:
 		const GSOut<CtxType> *pvLeft = &v1;
 		const GSOut<CtxType> *pvRight = &v2;
 
-		// order from vertices lowermost to uppermost (screen position)
+		// order vertices from lowermost to uppermost (screen position)
 		// assign v0 as the first one for now
 		orderedVertices[ 0 ] = &v0;
 		orderedVertices[ 1 ] = &v1;
@@ -262,14 +263,14 @@ private:
 			// calculate how much draw percentage represents a 1 pixel increment in the y axis
 			float verticalPixelIncrement = 1.0f / abs( vEdge.position.y() - vLeft.position.y() );
 			
-			GetVertexIncrement( leftIncrement, vLeft, vEdge, verticalPixelIncrement );
-			GetVertexIncrement( rightIncrement, vRight, vEdge, verticalPixelIncrement );
+			leftIncrement = GetVertexIncrement( vLeft, vEdge, verticalPixelIncrement );
+			rightIncrement = GetVertexIncrement( vRight, vEdge, verticalPixelIncrement );
 		}
 
 		// calculate horizontal increments for the triangle
 		{
 			float horizontalPixelIncrement = 1.0f / ( vRight.position.x() - vLeft.position.x() );
-			GetVertexIncrement( horizontalIncrement, vLeft, vRight, horizontalPixelIncrement );
+			horizontalIncrement = GetVertexIncrement( vLeft, vRight, horizontalPixelIncrement );
 		}
 
 		// align scanline starting and ending positions with pixel positions defined
@@ -313,12 +314,14 @@ private:
 
 	// applies the formula ( v1 - v0 ) * incrementFactor
 	template<typename VType>
-	void GetVertexIncrement( VType &vOut, const VType &v0, const VType &v1, float incrementFactor ) {
+	VType GetVertexIncrement( const VType &v0, const VType &v1, float incrementFactor ) {
 		// we do it like this so we don't have to define a lot of operators for 
 		// every vertex declaration
+		VType vOut;
 		vOut = v0;
 		vOut *= -1;
 		vOut += v1;
 		vOut *= incrementFactor;
+		return vOut;
 	}
 };

@@ -1,6 +1,8 @@
 #include "platform.h"
 #include "FileLoader.h"
+#pragma warning (push, 0) // remove warnings for OBJ Loader, devs must know what they'r doing
 #include "OBJ_Loader.h"
+#pragma warning (pop)
 #include <fstream>
 
 bool FileLoader::FileExists( const std::string &filename ) {
