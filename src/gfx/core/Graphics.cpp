@@ -1,4 +1,4 @@
-#include "pch.h"
+#include "platform.h"
 #include "Color.h"
 #include "Graphics.h"
 

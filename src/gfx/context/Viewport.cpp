@@ -1,4 +1,4 @@
-#include "pch.h"
+#include "platform.h"
 #include "Viewport.h"
 
 Viewport::Viewport( int width, int height )
@@ -7,15 +7,15 @@ Viewport::Viewport( int width, int height )
 
 Viewport::Viewport( int startX, int startY, int width, int height )
 	: factor( ( width - 1 ) / 2.0f, ( height - 1 ) / 2.0f, 1.0f, 1.0f ),
-	offset( startX, startY, 0.0f, 0.0f )
+	offset( float( startX ), float( startY ), 0.0f, 0.0f )
 {}
 
 Viewport::Viewport( const Vector2f &size )
-	: Viewport( size.x(), size.y() )
+	: Viewport( int( size.x() ), int( size.y() ) )
 {}
 
 Viewport::Viewport( const Vector4f &vp )
-	: Viewport( vp.x(), vp.y(), vp.z(), vp.w() ) 
+	: Viewport( int( vp.x() ), int( vp.y() ), int( vp.z() ), int( vp.w() ) ) 
 {}
 
 Vector4f &Viewport::Transform( Vector4f &coord ) const {

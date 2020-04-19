@@ -9,7 +9,7 @@
 //--------------------------------------------------------------------------------------
 
 #define FULL_WINDOWS
-#include "pch.h"
+#include "platform.h"
 #include "Mouse.h"
 #include <wrl.h>
 

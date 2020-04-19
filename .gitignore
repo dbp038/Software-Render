@@ -1,4 +1,5 @@
 ﻿.vs
 obj
-bin
+bin/*
+!bin/resources/
 *.aps

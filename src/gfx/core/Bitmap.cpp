@@ -1,4 +1,4 @@
-#include "pch.h"
+#include "platform.h"
 #include "Bitmap.h"
 
 Bitmap::Bitmap( unsigned int width, unsigned int height )

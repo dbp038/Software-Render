@@ -1,4 +1,4 @@
-#include "pch.h"
+#include "platform.h"
 #include "Time.h"
 #include "Application.h"
 

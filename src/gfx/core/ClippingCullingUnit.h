@@ -77,7 +77,7 @@ private:
 
 	struct PolygonVertex {
 		Vertex vertex;
-		int previous, next;
+		int previous = 0, next = 0;
 	};
 
 	std::array<PolygonVertex, 7> polygon;

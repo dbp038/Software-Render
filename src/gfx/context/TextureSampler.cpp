@@ -1,4 +1,4 @@
-#include "pch.h"
+#include "platform.h"
 #include "TextureSampler.h"
 
 void ITextureSampler::SetUVMode( UVMode mode ) {
@@ -35,7 +35,7 @@ Color TexturePointSampler::Sample( const TextureBitmap &texture, float x, float 
 	x = x * width + 1;
 	y = y * height + 1;
 
-	return textureBuffer[ bufferWidth * unsigned( x ) + unsigned( y ) ];
+	return textureBuffer[ bufferWidth * unsigned( y ) + unsigned( x ) ];
 }
 
 Color TextureLinearSampler::Sample( const TextureBitmap &texture, float x, float y ) const {

@@ -1,4 +1,4 @@
-#include "pch.h"
+#include "platform.h"
 #include "RenderTarget.h"
 
 RenderTarget::RenderTarget( unsigned int width, unsigned int height )

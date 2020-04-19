@@ -1,4 +1,4 @@
-#include "pch.h"
+#include "platform.h"
 #include "Application.h"
 
 Application *Application::pAppInstance = nullptr;

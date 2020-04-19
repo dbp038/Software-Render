@@ -1,4 +1,4 @@
-#include "pch.h"
+#include "platform.h"
 #include "Application.h"
 
 // This class allows WinMain (and no one else) to have access to Application's Start method

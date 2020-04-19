@@ -1,4 +1,4 @@
-#include "pch.h"
+#include "platform.h"
 #include "GeometryGenerator.h"
 #include "gfx/core/Color.h"
 

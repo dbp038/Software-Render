@@ -5,7 +5,7 @@ struct BasicIlluminationGlobalColorPixelShader {
 	Vector4f globalColor = Colors::White.ToVector4f();
 	Vector3f lightDirection = Vector3f( 0.0f, 0.0f, 1.0f );
 	float lightIntensity = 1.0f;
-	float ambientFactor = 0.05f;
+	float ambientFactor = 0.15f;
 
 	Color operator()( const PosNVertex &vtx ) {
 		Color out = globalColor;
@@ -20,7 +20,7 @@ struct BasicIlluminationTexturePixelShader {
 
 	Vector3f lightDirection = Vector3f( 0.0f, 0.0f, 1.0f );
 	float lightIntensity = 1.0f;
-	float ambientFactor = 0.05f;
+	float ambientFactor = 0.15f;
 
 	TextureBitmap texture;
 	Sampler sampler;

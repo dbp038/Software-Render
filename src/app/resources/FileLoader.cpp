@@ -1,6 +1,8 @@
-#include "pch.h"
+#include "platform.h"
 #include "FileLoader.h"
+#pragma warning (push, 0) // remove warnings for OBJ Loader, devs must know what they'r doing
 #include "OBJ_Loader.h"
+#pragma warning (pop)
 #include <fstream>
 
 bool FileLoader::FileExists( const std::string &filename ) {
@@ -38,6 +40,25 @@ void LoadIndices( objl::Loader &objLoader, std::vector<size_t> &indices ) {
 	for ( const auto &idx : objIndices ) {
 		indices.push_back( size_t( idx ) );
 	}
+}
+
+Model<PosVertex> FileLoader::LoadPosModelFromFile( const std::string &path ) {
+	Model<PosVertex> model;
+	objl::Loader objLoader;
+	objLoader.LoadFile( path );
+
+	const auto &objVertices = objLoader.LoadedVertices;
+	model.vertices.reserve( objVertices.size() );
+	for ( const auto &vert : objVertices ) {
+		model.vertices.push_back(
+			PosVertex{
+				Vector4f( vert.Position.X, vert.Position.Y, vert.Position.Z, 1.0f )
+			}
+		);
+	}
+
+	LoadIndices( objLoader, model.indices );
+	return model;
 }
 
 Model<PosNVertex> FileLoader::LoadPosNModelFromFile( const std::string &path ) {
