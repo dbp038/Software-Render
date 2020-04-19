@@ -1,4 +1,4 @@
-#include "pch.h"
+#include "platform.h"
 #include "ExampleScene.h"
 #include "app/Application.h"
 #include "app/resources/FileLoader.h"

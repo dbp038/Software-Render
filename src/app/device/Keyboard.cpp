@@ -8,7 +8,7 @@
 // http://go.microsoft.com/fwlink/?LinkID=615561
 //--------------------------------------------------------------------------------------
 
-#include "pch.h"
+#include "platform.h"
 #include "Keyboard.h"
 
 static_assert( sizeof( Keyboard::State ) == ( 256 / 8 ), "Size mismatch for State" );

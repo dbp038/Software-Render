@@ -1,4 +1,4 @@
-#include "pch.h"
+#include "platform.h"
 #include "TextureBitmap.h"
 #include "app/resources/FileLoader.h"
 

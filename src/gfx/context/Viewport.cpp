@@ -1,4 +1,4 @@
-#include "pch.h"
+#include "platform.h"
 #include "Viewport.h"
 
 Viewport::Viewport( int width, int height )

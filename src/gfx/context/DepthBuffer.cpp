@@ -1,4 +1,4 @@
-#include "pch.h"
+#include "platform.h"
 #include "DepthBuffer.h"
 
 DepthBuffer::DepthBuffer( const unsigned int width, const unsigned int height ) {

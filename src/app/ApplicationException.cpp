@@ -1,4 +1,4 @@
-#include "pch.h"
+#include "platform.h"
 #include "ApplicationException.h"
 
 ApplicationException::ApplicationException( int line, const char *file ) noexcept

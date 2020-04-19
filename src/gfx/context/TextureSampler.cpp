@@ -1,4 +1,4 @@
-#include "pch.h"
+#include "platform.h"
 #include "TextureSampler.h"
 
 void ITextureSampler::SetUVMode( UVMode mode ) {

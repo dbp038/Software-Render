@@ -104,7 +104,8 @@
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <FloatingPointModel>Fast</FloatingPointModel>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile>
+      </PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>$(ProjectDir)eigen\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
     </ClCompile>
@@ -125,7 +126,8 @@
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <FloatingPointModel>Fast</FloatingPointModel>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile>
+      </PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>$(ProjectDir)eigen\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <EnableEnhancedInstructionSet>NotSet</EnableEnhancedInstructionSet>
     </ClCompile>
@@ -148,7 +150,8 @@
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <FloatingPointModel>Fast</FloatingPointModel>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile>
+      </PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>$(ProjectDir)eigen\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <EnableEnhancedInstructionSet>AdvancedVectorExtensions2</EnableEnhancedInstructionSet>
       <Optimization>MaxSpeed</Optimization>
@@ -174,7 +177,8 @@
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <FloatingPointModel>Fast</FloatingPointModel>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile>
+      </PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>$(ProjectDir)eigen\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <EnableEnhancedInstructionSet>AdvancedVectorExtensions2</EnableEnhancedInstructionSet>
       <Optimization>MaxSpeed</Optimization>
@@ -200,7 +204,7 @@
     <ClCompile Include="src\gfx\core\RenderPipeline.cpp" />
     <ClCompile Include="src\gfx\context\TextureBitmap.cpp" />
     <ClCompile Include="src\gfx\context\TextureSampler.cpp" />
-    <ClCompile Include="src\pch.cpp" />
+    <ClCompile Include="src\platform.cpp" />
     <ClCompile Include="src\gfx\core\RenderTarget.cpp" />
     <ClCompile Include="src\game\GeometryGenerator.cpp" />
     <ClCompile Include="src\app\Time.cpp" />
@@ -237,7 +241,7 @@
     <ClInclude Include="src\gfx\shader\VertexColorPixelShader.h" />
     <ClInclude Include="src\gfx\context\VertexDeclarations.h" />
     <ClInclude Include="src\gfx\shader\PerspectiveVertexShader.h" />
-    <ClInclude Include="src\pch.h" />
+    <ClInclude Include="src\platform.h" />
     <ClInclude Include="src\gfx\core\RenderTarget.h" />
     <ClInclude Include="src\resource.h" />
     <ClInclude Include="src\game\Game.h" />

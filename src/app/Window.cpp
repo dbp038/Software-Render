@@ -1,4 +1,4 @@
-#include "pch.h"
+#include "platform.h"
 #include "Window.h"
 #include "resource.h"
 #include "device/Mouse.h"

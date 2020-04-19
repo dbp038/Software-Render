@@ -1,4 +1,4 @@
-#include "pch.h"
+#include "platform.h"
 #include "FileLoader.h"
 #include "OBJ_Loader.h"
 #include <fstream>
