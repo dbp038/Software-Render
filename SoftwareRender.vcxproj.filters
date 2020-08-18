@@ -185,7 +185,7 @@
     <ClInclude Include="src\platform.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\gfx\core\ClippingCullingUnit.h">
+    <ClInclude Include="src\gfx\context\ClippingCullingUnit.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
