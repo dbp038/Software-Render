@@ -4,43 +4,30 @@
 #include "app/resources/FileLoader.h"
 #include "gfx/context/Viewport.h"
 
-#include "gfx/context/TextureSampler.h"
-#include "gfx/shader/PerspectiveVertexShader.h"
-#include "gfx/shader/BasicIlluminationPixelShader.h"
-
-using VertexType = PosNUvVertex;
-
-using Sampler = TextureLinearSampler;
-
-using VS = PerspectiveVertexShader;
-using PS = BasicIlluminationTexturePixelShader<Sampler>;
-
-using CtxType = RenderContext<VertexType, VS, PS>;
-
-Model<VertexType> model;
-
 ExampleScene::ExampleScene() : winTitleUpdater( 1.0f / 23.0f ) {
 	int width = App.GetWindow().GetWidth();
 	int height = App.GetWindow().GetHeight();
 
-	// initialize render context
 	pCtx = std::make_unique<CtxType>();
-	CtxType &ctx = *static_cast<CtxType *>( pCtx.get() );
-
-	// pass texture to pixel shader
-	auto &ps = ctx.GetPixelShaderData();
-	ps.texture.SetTexture( "bin\\resources\\textures\\skull.png" );
-	ps.sampler.SetUVMode( ITextureSampler::UVMode::WRAP );
-
-	ctx.BindViewport( Viewport( width, height ) );
+	auto &ctx = static_cast<CtxType &>( *pCtx.get() );
 
 	// load model and pass it to render context
 	model = FileLoader::LoadPosNUvModelFromFile( "bin\\resources\\models\\skull.obj" );
 	ctx.BindVertexData( model.vertices );
 	ctx.BindIndexData( model.indices );
 
+	// set vertex shader buffer data
 	Matrix4f perspecive = Matrices::PerspectiveFovLH( PI / 3.0f, float( width ) / height, 0.5f, 1000.0f );
-	ctx.BindVertexShaderBuffer( { Matrix4f::Identity(), perspecive } );
+	auto &vs = ctx.GetVertexShaderData();
+	vs.transformMatrix = Matrix4f::Identity();
+	vs.perspectiveMatrix = perspecive;
+
+	ctx.BindViewport( Viewport( width, height ) );
+
+	// pass texture to pixel shader
+	auto &ps = ctx.GetPixelShaderData();
+	ps.texture.SetTexture( "bin\\resources\\textures\\skull.png" );
+	ps.sampler.SetUVMode( ITextureSampler::UVMode::WRAP );
 
 	ctx.BindDepthBuffer( width, height );
 
@@ -50,12 +37,13 @@ ExampleScene::ExampleScene() : winTitleUpdater( 1.0f / 23.0f ) {
 void ExampleScene::Update() {
 	auto &kb = Keyboard::Get();
 	float speed = rotationSpeed;
+	// hold shift to increase speed by 2
 	if ( kb.IsKeyDown( Keyboard::LeftShift ) )
 		speed *= 2.0f;
 	if ( kb.IsKeyDown( Keyboard::LeftControl ) )
 		speed *= 0.5f;
 
-	// rotate model
+	// rotate model ( W, A, S, D )
 	if ( kb.IsKeyDown( Keyboard::W ) ) {
 		pitch -= Time.delta * speed;
 	}
@@ -75,7 +63,7 @@ void ExampleScene::Update() {
 		roll += Time.delta * speed;
 	}
 
-	// rotate light direction
+	// rotate light direction ( I, J, K, L )
 	if ( kb.IsKeyDown( Keyboard::I ) ) {
 		lightPitch += Time.delta * speed;
 	}
@@ -95,7 +83,8 @@ void ExampleScene::Update() {
 		lightRoll -= Time.delta * speed;
 	}
 
-	// translate model
+	// translate model 
+	// ( forward Numpad5, backward Numpad0, up Numpad8, down Numpad2, left Numpad4, right Numpad6 )
 	if ( kb.IsKeyDown( Keyboard::NumPad8 ) ) {
 		yOffset += Time.delta * speed;
 	}
@@ -122,16 +111,16 @@ void ExampleScene::Update() {
 void ExampleScene::Draw( Graphics &gfx ) {
 	ShowFPS();
 
-	gfx.ClearBackground();
+	auto &ctx = static_cast<CtxType &>( *pCtx.get() );
 
-	CtxType &ctx = *static_cast<CtxType *>( pCtx.get() );
+	gfx.ClearBackground();
 	ctx.ClearDepthBuffer();
 
 	// apply transformations to model
 	auto &psBuffer = ctx.GetVertexShaderData();
 	psBuffer.transformMatrix = Matrices::RotationYawPitchRoll4f( yaw, pitch, roll ) * Matrices::Scale4f(1.0f);
 	psBuffer.transformMatrix = Matrices::Translation4f( xOffset, yOffset, zOffset + 1.5f ) * psBuffer.transformMatrix;
-	ctx.BindVertexShaderBuffer( psBuffer ); // not technically needed
+	ctx.BindVertexShader( psBuffer ); // not technically needed
 
 	// apply transformations to light
 	auto &ps = ctx.GetPixelShaderData();
@@ -151,7 +140,9 @@ void ExampleScene::ShowFPS() {
 	if ( storedWindowName.empty() )
 		storedWindowName = App.GetWindow().GetTitle();
 	if ( winTitleUpdater.IsFinished() ) {
-		App.GetWindow().SetTitle( storedWindowName + " (FPS = " + std::to_string( int( 1.0f / Time.delta ) ) + ")" );
+		App.GetWindow().SetTitle( 
+			storedWindowName + " (FPS = " + std::to_string( int( Time.timeScale / Time.delta ) ) + ")" 
+		);
 		winTitleUpdater.Reset();
 	}
 }

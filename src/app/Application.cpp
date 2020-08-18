@@ -25,14 +25,20 @@ void Application::RequestClose() {
 }
 
 int Application::Start() {
-
-
 	// initialize keyboard and mouse
 	pKeyboard = std::make_unique<Keyboard>();
 	pMouse = std::make_unique<Mouse>();
 
-	pWnd = std::make_unique<Window>( 1280, 720, "DBP's Software Render" );
+	pWnd = std::make_unique<Window>( 400, 300, "Software Render" );
 	pWnd->SetMouseToWindow();
+
+
+#ifndef NDEBUG
+	std::string debugWarningText = std::string( "Compiled using debug settings, this application " ) +
+		"was not designed with performance in mind, expect high load times as well as slow program " +
+		"behavior.";
+	MessageBox( pWnd->hWnd, debugWarningText.c_str(), "DEBUG warning", MB_OK | MB_ICONEXCLAMATION );
+#endif
 
 	return MainLoop();
 }

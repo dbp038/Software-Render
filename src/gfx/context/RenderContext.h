@@ -53,10 +53,10 @@ public:
 	void BindViewport( const Viewport &vp ) {
 		viewport = vp;
 	}
-	void BindVertexShaderBuffer( const VS &buffer ) {
+	void BindVertexShader( const VS &buffer ) {
 		vs = buffer;
 	}
-	void BindPixelShaderBuffer( const PS &buffer ) {
+	void BindPixelShader( const PS &buffer ) {
 		ps = buffer;
 	}
 
