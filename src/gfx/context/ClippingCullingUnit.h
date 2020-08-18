@@ -139,7 +139,7 @@ private:
 					if ( isInsideFunction( neighbourCoord, threshold ) ) {
 						// we need to create a new vertex in this case with valid values (i.e. inside the screen)
 						AddVertexToPolygon(
-							GetCuttingPoint( axis, threshold,
+							GetCuttingPoint( axis, int( threshold ),
 								currentVtx.vertex,
 								polygon[ currentVtx.previous ].vertex
 							), currentVtx.previous
@@ -147,14 +147,14 @@ private:
 					}
 
 					// invalidate current vertex and overwite it with one inside the limits of the screen
-					currentVtx.vertex = GetCuttingPoint( axis, threshold,
+					currentVtx.vertex = GetCuttingPoint( axis, int( threshold ),
 						currentVtx.vertex, polygon[ currentVtx.next ].vertex );
 				}
 				// is previous neighbour in polygon inside the screen?
 				else if ( isInsideFunction( polygon[ currentVtx.previous ].vertex.position[ axis ], threshold ) ) {
 					// we can only interpolate with one of the two neighbours
 					// invalidate vertex and overwite it with one inside the limits of the screen
-					currentVtx.vertex = GetCuttingPoint( axis, threshold,
+					currentVtx.vertex = GetCuttingPoint( axis, int( threshold ),
 						currentVtx.vertex, polygon[ currentVtx.previous ].vertex );
 				}
 				// all vertices are outside, current vertex is not necessary, cull it

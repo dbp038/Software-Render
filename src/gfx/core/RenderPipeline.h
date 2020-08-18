@@ -92,6 +92,7 @@ private:
 		clipCullUnit.ClipCullPositiveYAxis( 1.0f );
 
 		GSOut<CtxType> newV0, newV1, newV2;
+		// triangle could be clipped into different sub-triangles, so we need to iterate over them all
 		for ( i = 0; i < clipCullUnit.GetTriangleCount(); i++ ) {
 			// perform backface culling
 			if ( !clipCullUnit.IsCurrentTriangleBackfaced() ) {
@@ -113,11 +114,6 @@ private:
 		
 		DrawTriangle( ctx, v0, v1, v2 );
 		// pixel shader is executed inside DrawTriangle
-		
-		// Draw a white wireframe if you want
-		//DrawLine( v0.position.x(), v0.position.y(), v1.position.x(), v1.position.y(), Colors::White );
-		//DrawLine( v1.position.x(), v1.position.y(), v2.position.x(), v2.position.y(), Colors::White );
-		//DrawLine( v2.position.x(), v2.position.y(), v0.position.x(), v0.position.y(), Colors::White );
 	}
 
 	template<typename CtxType>

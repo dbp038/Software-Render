@@ -1,4 +1,5 @@
 #pragma once
+#include "gfx/context/TextureSampler.h"
 
 struct BasicIlluminationGlobalColorPixelShader {
 
