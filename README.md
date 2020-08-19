@@ -1,6 +1,6 @@
 # Software-Render
 ## About the project
-A basic software render application just for the purpose of acquiring a better insight on how a GPU render pipeline works from within. It features a programmable render pipeline (vertex input, vertex shader, geometry shader, pixel shader) in C++ like syntax; an example scene is provided inside the src/game/ folder.
+A basic software renderer application just for the purpose of acquiring a better insight on how a GPU render pipeline works from within. It features a programmable render pipeline (vertex input, vertex shader, geometry shader, pixel shader) in C++ like syntax; an example scene is provided inside the src/game/ folder.
 
 ![alt text][app-screenshot]
 
